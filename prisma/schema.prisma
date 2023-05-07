@@ -6,7 +6,7 @@ generator client {
 }
 
 generator pothos {
-  provider = "prisma-pothos-type"
+  provider = "prisma-pothos-types"
 }
 
 datasource db {
@@ -15,53 +15,55 @@ datasource db {
 }
 
 model Holder {
-  id            String     @id @default(uuid())
-  address       String     @unique
+  id             String     @id @default(uuid())
+  address        String     @unique
   MrCryptosOwned MrCrypto[]
 
   @@index([address])
 }
 
 model MrCrypto {
-  id                String @id @default(uuid())
-  tokenId           Int    @unique
-  Owner             Holder @relation(fields: [ownerId], references: [id])
+  id                String     @id @default(uuid())
+  tokenId           Int        @unique
+  Owner             Holder     @relation(fields: [ownerId], references: [id])
   ownerId           String
   imageURL          String
   metadataURl       String
   lastTransferBlock BigInt
   Transfers         Transfer[]
+  E7LTokensLinked   E7LToken[]
 
   @@index([ownerId, tokenId])
 }
 
 model E7L {
-  id String @id @default(uuid())
-  name String 
-  deployedBlock BigInt
-  contractAddress String
+  id               String     @id @default(uuid())
+  name             String
+  deployedBlock    BigInt
+  contractAddress  String
   lastBlockIndexed BigInt
-  Tokens E7LToken[]
+  Tokens           E7LToken[]
 }
 
 model E7LToken {
-  id String @id @default(uuid())
-  e7lTokenId Int 
+  id              String   @id @default(uuid())
+  e7lTokenId      Int
   mrcryptoTokenId Int
-  linkedAt BigInt
-  E7L E7L @relation(fields: [e7lId], references: [id])
-  e7lId String
+  MrCrypto        MrCrypto @relation(fields: [mrcryptoTokenId], references: [tokenId])
+  linkedAt        BigInt
+  E7L             E7L      @relation(fields: [e7lId], references: [id])
+  e7lId           String
 
   @@unique([e7lId, mrcryptoTokenId])
   @@index([e7lId, mrcryptoTokenId])
 }
 
 model Transfer {
-  id String @id @default(uuid())
+  id          String   @id @default(uuid())
   blockNumber BigInt
-  hash String
-  from String
-  to String
-  tokenId Int
-  Token MrCrypto @relation(fields: [tokenId], references: [tokenId])
+  hash        String
+  from        String
+  to          String
+  tokenId     Int
+  Token       MrCrypto @relation(fields: [tokenId], references: [tokenId])
 }
