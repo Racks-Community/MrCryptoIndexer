@@ -28,7 +28,7 @@ model MrCrypto {
   Owner             Holder     @relation(fields: [ownerId], references: [id])
   ownerId           String
   imageURL          String
-  metadataURl       String
+  metadataURL       String
   lastTransferBlock BigInt
   Transfers         Transfer[]
   E7LTokensLinked   E7LToken[]
@@ -53,6 +53,8 @@ model E7LToken {
   linkedAt        BigInt
   E7L             E7L      @relation(fields: [e7lId], references: [id])
   e7lId           String
+  metadataURL     String
+  imageURL        String
 
   @@unique([e7lId, mrcryptoTokenId])
   @@index([e7lId, mrcryptoTokenId])

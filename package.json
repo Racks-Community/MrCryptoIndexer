@@ -8,25 +8,30 @@
     "start": "node dist/server",
     "clean": "rm -rf dist",
     "build": "npm -s run clean && npm -s run generate && tsc && npm run build:schema",
-    "build:schema": "ts-node src/schema/index.ts",
+    "build:schema": "ts-node -r tsconfig-paths/register src/schema/index.ts",
     "generate": "npm -s run generate:prisma",
     "generate:prisma": "prisma generate",
     "foo": "ts-node -r tsconfig-paths/register ./src/indexer/index.ts",
     "bar": "ts-node -r tsconfig-paths/register ./src/indexer/script.ts",
     "prisma:reset": "prisma db push --force-reset"
   },
+  "prisma": {
+    "seed": "ts-node --transpile-only prisma/seed.ts"
+  },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "devDependencies": {
     "@types/node": "20.1.0",
+    "@types/ws": "^8.5.4",
     "cross-env": "7.0.3",
     "prisma": "^4.13.0",
     "ts-node": "10.9.1",
     "ts-node-dev": "2.0.0",
     "tsconfig-paths": "^4.2.0",
-    "typescript": "5.0.4"
+    "tsup": "^6.7.0"
   },
+
   "dependencies": {
     "@graphql-tools/schema": "^9.0.19",
     "@pothos/core": "^3.30.0",
@@ -35,6 +40,7 @@
     "graphql": "^16.6.0",
     "graphql-scalars": "^1.21.3",
     "graphql-yoga": "3.9.1",
+    "typescript": "5.0.4",
     "viem": "^0.3.17"
   }
 }
