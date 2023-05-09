@@ -10,6 +10,9 @@ dependencies:
   '@pothos/plugin-prisma':
     specifier: ^3.50.0
     version: 3.50.0(@pothos/core@3.30.0)(@prisma/client@4.13.0)(graphql@16.6.0)(typescript@5.0.4)
+  '@pothos/plugin-relay':
+    specifier: ^3.43.0
+    version: 3.43.0(@pothos/core@3.30.0)(graphql@16.6.0)
   '@prisma/client':
     specifier: ^4.13.0
     version: 4.13.0(prisma@4.13.0)
@@ -484,6 +487,16 @@ packages:
       typescript: 5.0.4
     transitivePeerDependencies:
       - supports-color
+    dev: false
+
+  /@pothos/plugin-relay@3.43.0(@pothos/core@3.30.0)(graphql@16.6.0):
+    resolution: {integrity: sha512-435jODSgj29IRgHlQjfLUoaTcg1FodqkOaNA0T0IZmjgmS8+2GxqYscRrZWQU7Ufr1MLRvGXOQ+14ri2jw5geQ==}
+    peerDependencies:
+      '@pothos/core': '*'
+      graphql: '>=15.1.0'
+    dependencies:
+      '@pothos/core': 3.30.0(graphql@16.6.0)
+      graphql: 16.6.0
     dev: false
 
   /@prisma/client@4.13.0(prisma@4.13.0):

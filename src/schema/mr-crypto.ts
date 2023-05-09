@@ -90,3 +90,27 @@ builder.queryFields((t) => ({
     },
   }),
 }));
+
+const OrderByInput = builder.enumType("OrderByInput", {
+  values: {asc: {}, desc: {}},
+});
+
+builder.queryFields((t) => ({
+  transfers: t.prismaField({
+    type: ["Transfer"],
+    args: {
+      first: t.arg.int({ required: true, defaultValue: 100 }),
+      skip: t.arg.int({ required: true, defaultValue: 0 }),
+      order: t.arg({type: OrderByInput, required: true, defaultValue: "asc"})
+    },
+    resolve: (query, _parent, args) =>
+      prisma.transfer.findMany({
+        ...query,
+        skip: args.skip,
+        take: args.first,
+        orderBy: {
+          blockNumber: args.order,
+        },
+      }),
+  }),
+}));

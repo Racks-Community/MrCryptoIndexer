@@ -1,5 +1,6 @@
 import SchemaBuilder from "@pothos/core";
 import PrismaPlugin from "@pothos/plugin-prisma";
+import RelayPlugin from "@pothos/plugin-relay";
 import type PrismaTypes from "@pothos/plugin-prisma/generated";
 import { DateTimeResolver, BigIntResolver } from "graphql-scalars";
 import { prisma } from "@/db";
@@ -18,7 +19,11 @@ export const builder = new SchemaBuilder<{
     };
   };
 }>({
-  plugins: [PrismaPlugin],
+  plugins: [PrismaPlugin, RelayPlugin],
+  relayOptions: {
+    clientMutationId: 'omit',
+      cursorType: 'String',
+  },
   prisma: {
     client: prisma,
   },

@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "dev": "ts-node-dev --no-notify --respawn -r tsconfig-paths/register --transpile-only src/server",
-    "start": "tsup && node dist/server",
+    "start": "node dist/server",
     "clean": "rm -rf dist",
     "build": "npm -s run clean && npm -s run generate && tsup && npm run build:schema",
     "build:schema": "ts-node -r tsconfig-paths/register src/schema/index.ts",
@@ -31,11 +31,11 @@
     "tsconfig-paths": "^4.2.0",
     "tsup": "^6.7.0"
   },
-
   "dependencies": {
     "@graphql-tools/schema": "^9.0.19",
     "@pothos/core": "^3.30.0",
     "@pothos/plugin-prisma": "^3.50.0",
+    "@pothos/plugin-relay": "^3.43.0",
     "@prisma/client": "^4.13.0",
     "graphql": "^16.6.0",
     "graphql-scalars": "^1.21.3",

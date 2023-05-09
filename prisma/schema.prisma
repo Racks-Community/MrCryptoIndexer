@@ -63,7 +63,7 @@ model E7LToken {
 model Transfer {
   id          String   @id @default(uuid())
   blockNumber BigInt
-  hash        String
+  hash        String   
   from        String
   to          String
   tokenId     Int
@@ -72,8 +72,8 @@ model Transfer {
 }
 
 model Payment {
-  id         String @id @default(uuid())
-  transferId String @unique
+  id         String   @id @default(uuid())
+  transferId String   @unique
   Transfer   Transfer @relation(fields: [transferId], references: [id])
   currency   String
   amount     Float
