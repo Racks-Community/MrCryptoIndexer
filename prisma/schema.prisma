@@ -68,4 +68,13 @@ model Transfer {
   to          String
   tokenId     Int
   Token       MrCrypto @relation(fields: [tokenId], references: [tokenId])
+  Payment     Payment?
+}
+
+model Payment {
+  id         String @id @default(uuid())
+  transferId String @unique
+  Transfer   Transfer @relation(fields: [transferId], references: [id])
+  currency   String
+  amount     Float
 }

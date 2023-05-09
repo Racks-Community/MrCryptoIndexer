@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "dev": "ts-node-dev --no-notify --respawn -r tsconfig-paths/register --transpile-only src/server",
-    "start": "node dist/server",
+    "start": "tsup ./src/server.ts && node dist/server",
     "clean": "rm -rf dist",
     "build": "npm -s run clean && npm -s run generate && tsc && npm run build:schema",
     "build:schema": "ts-node -r tsconfig-paths/register src/schema/index.ts",
@@ -13,7 +13,7 @@
     "generate:prisma": "prisma generate",
     "foo": "ts-node -r tsconfig-paths/register ./src/indexer/index.ts",
     "bar": "ts-node -r tsconfig-paths/register ./src/indexer/script.ts",
-    "prisma:reset": "prisma db push --force-reset"
+    "prisma:reset": "prisma db push --force-reset && npx prisma db seed"
   },
   "prisma": {
     "seed": "ts-node --transpile-only prisma/seed.ts"

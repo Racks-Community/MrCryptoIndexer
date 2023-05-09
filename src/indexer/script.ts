@@ -2,8 +2,6 @@ import data from "./_metadata_save.json"
 import fs from "fs"
 import path from "path"
 
-
-
 const metadata = data as {image: string, edition: number}[];
 
 const res : Record<number,string> = {}
