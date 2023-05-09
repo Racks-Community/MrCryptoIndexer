@@ -5,9 +5,9 @@
   "main": "index.js",
   "scripts": {
     "dev": "ts-node-dev --no-notify --respawn -r tsconfig-paths/register --transpile-only src/server",
-    "start": "tsup ./src/server.ts && node dist/server",
+    "start": "tsup && node dist/server",
     "clean": "rm -rf dist",
-    "build": "npm -s run clean && npm -s run generate && tsc && npm run build:schema",
+    "build": "npm -s run clean && npm -s run generate && tsup && npm run build:schema",
     "build:schema": "ts-node -r tsconfig-paths/register src/schema/index.ts",
     "generate": "npm -s run generate:prisma",
     "generate:prisma": "prisma generate",
