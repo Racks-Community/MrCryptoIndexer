@@ -1,4 +1,4 @@
-import { createPublicClient, formatEther, http, zeroAddress } from "viem";
+import { createPublicClient, formatEther, formatUnits, http, parseUnits, zeroAddress } from "viem";
 import { polygon } from "viem/chains";
 import { abiMrcrypto } from "./abi-mrcrypto";
 import { prisma } from "@/db";
@@ -275,7 +275,7 @@ async function checkForUSDCTransfer(
 
   if (total > 0n) {
     console.log(
-      `WETH Transfer ${formatEther(total).substring(
+      `WETH Transfer ${formatUnits(total, 6).substring(
         0,
         5
       )} to ${from} on tx ${txHash}`
@@ -284,7 +284,7 @@ async function checkForUSDCTransfer(
     await prisma.payment.create({
       data: {
         Transfer: { connect: { id: transferId } },
-        amount: Number(formatEther(total)),
+        amount: Number(formatUnits(total, 6)),
         currency: "USDC",
       },
     });
