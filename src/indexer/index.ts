@@ -11,6 +11,9 @@ const MRCRYPTO_DEPLOY_BLOCK: bigint = BigInt(25839542 - 1);
 const MRCRYPTO_ADDRESS = "0xeF453154766505FEB9dBF0a58E6990fd6eB66969";
 const ALCHEMY_URL = process.env.RPC_URL ?? "";
 
+const USDC_ADDRESS = '0x2791Bca1f2de4661ED88A30C99A7a9449Aa84174';
+const WETH_ADDRESS = '0x7ceB23fD6bC0adD59E62ac25578270cFf1b9f619';
+
 const BLOCKS_PER_QUERY = BigInt(200_000);
 
 const transport = http(ALCHEMY_URL);
@@ -170,17 +173,13 @@ async function indexMrCrypto(currentBlock: bigint) {
         continue;
       }
 
-      const finded = await checkForEthTransfer(
+     await checkForEthTransfer(
         log.blockNumber,
         log.transactionHash ?? "",
         from,
         to,
         transfer.id
       );
-
-      if (finded) {
-        continue;
-      }
 
       await checkForUSDCTransfer(
         log.blockNumber,
@@ -203,7 +202,7 @@ async function checkForEthTransfer(
   const filter = await client.createContractEventFilter({
     abi: abiWETH,
     eventName: "Transfer",
-    address: "0x2791Bca1f2de4661ED88A30C99A7a9449Aa84174",
+    address: WETH_ADDRESS,
     fromBlock: blockNumber ?? BigInt(0),
     toBlock: blockNumber ?? BigInt(0),
   });
@@ -214,7 +213,7 @@ async function checkForEthTransfer(
     (l) => l.transactionHash == txHash && l.args.from == to
   );
 
-  // Hay transacción de WETH
+  // NO hay transacción de WETH
   if (!wethTransfer) {
     return false;
   }
@@ -225,7 +224,7 @@ async function checkForEthTransfer(
 
   if (total > 0n) {
     console.log(
-      `USDC Transfer ${formatEther(total).substring(
+      `WETH Transfer ${formatEther(total).substring(
         0,
         5
       )} to ${from} on tx ${txHash}`
@@ -253,7 +252,7 @@ async function checkForUSDCTransfer(
   const filter = await client.createContractEventFilter({
     abi: abiWETH,
     eventName: "Transfer",
-    address: "0x7ceB23fD6bC0adD59E62ac25578270cFf1b9f619",
+    address: USDC_ADDRESS,
     fromBlock: blockNumber ?? BigInt(0),
     toBlock: blockNumber ?? BigInt(0),
   });
@@ -265,7 +264,7 @@ async function checkForUSDCTransfer(
   );
 
   // Hay transacción de WETH
-  if (!wethTransfer) {
+  if (!wethTransfer || wethTransfer.length == 0) {
     return false;
   }
 
@@ -275,7 +274,7 @@ async function checkForUSDCTransfer(
 
   if (total > 0n) {
     console.log(
-      `WETH Transfer ${formatUnits(total, 6).substring(
+      `USDC Transfer ${formatUnits(total, 6).substring(
         0,
         5
       )} to ${from} on tx ${txHash}`
