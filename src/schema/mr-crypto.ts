@@ -108,9 +108,11 @@ builder.queryFields((t) => ({
         ...query,
         skip: args.skip,
         take: args.first,
-        orderBy: {
+        orderBy: [{
           blockNumber: args.order,
-        },
+        },{
+          tokenId: args.order,  
+        }],
       }),
   }),
 }));
