@@ -5,6 +5,7 @@ import { prisma } from "@/db";
 import { metadata } from "./metadata";
 import { abiE7L } from "./abi-E7L";
 import { abiWETH } from "./abi-weth";
+import { E7L } from "@prisma/client";
 
 const MRCRYPTO_DEPLOY_BLOCK: bigint = BigInt(25839542 - 1);
 const MRCRYPTO_ADDRESS = "0xeF453154766505FEB9dBF0a58E6990fd6eB66969";
@@ -34,67 +35,82 @@ export async function indexerProcess() {
   for (const e7l of E7Ls) {
     const lastBlockIndexed = e7l.lastBlockIndexed + 1n;
 
-    for (
-      let block = lastBlockIndexed;
-      block < currentBlock;
-      block += BLOCKS_PER_QUERY - BigInt(1)
-    ) {
-      const filter = await client.createContractEventFilter({
+    await indexE7L(lastBlockIndexed, currentBlock, e7l);
+  }
+}
+
+async function indexE7L(
+  lastBlockIndexed: bigint,
+  currentBlock: bigint,
+  e7l: E7L
+) {
+  for (
+    let block = lastBlockIndexed;
+    block < currentBlock;
+    block += BLOCKS_PER_QUERY - BigInt(1)
+  ) {
+    const filter = await client.createContractEventFilter({
+      abi: abiE7L,
+      address: e7l.contractAddress as `0x${string}`,
+      eventName: "Link",
+      fromBlock: block,
+      toBlock: block + BLOCKS_PER_QUERY - BigInt(1),
+    });
+
+    const logs = await client.getFilterLogs({ filter });
+
+    for (let log of logs) {
+      const e7lTokenId = Number(log.args.tokenId);
+      const mrcryptoTokenId = Number(log.args.parentTokenId);
+      const block = log.blockNumber ?? BigInt(0);
+
+      const uri = await client.readContract({
         abi: abiE7L,
+        functionName: "tokenURI",
         address: e7l.contractAddress as `0x${string}`,
-        eventName: "Link",
-        fromBlock: block,
-        toBlock: block + BLOCKS_PER_QUERY - BigInt(1),
+        args: [BigInt(e7lTokenId)],
       });
 
-      const logs = await client.getFilterLogs({ filter });
+      const metadata = await fetch(uri).then((res) => res.json());
 
-      for (let log of logs) {
-        const e7lTokenId = Number(log.args.tokenId);
-        const mrcryptoTokenId = Number(log.args.parentTokenId);
-        const block = log.blockNumber ?? BigInt(0);
+      const image = metadata.image as string;
 
-        const uri = await client.readContract({
-          abi: abiE7L,
-          functionName: "tokenURI",
-          address: e7l.contractAddress as `0x${string}`,
-          args: [BigInt(e7lTokenId)],
-        });
+      console.log(
+        `[${e7l.name.padStart(10)}] E7L ${e7lTokenId
+          .toString()
+          .padStart(4)} linked to MrCrypto ${e7lTokenId.toString().padStart(4)}`
+      );
 
-        const metadata = await fetch(uri).then((res) => res.json());
+      await prisma.e7LToken.create({
+        data: {
+          e7lId: e7l.id,
+          e7lTokenId,
+          mrcryptoTokenId,
+          linkedAt: block,
+          imageURL: image,
+          metadataURL: uri,
+        },
+      });
 
-        const image = metadata.image as string;
-
-        console.log(
-          `[${e7l.name.padStart(10)}] E7L ${e7lTokenId
-            .toString()
-            .padStart(4)} linked to MrCrypto ${e7lTokenId
-            .toString()
-            .padStart(4)}`
-        );
-
-        await prisma.e7LToken.create({
-          data: {
-            e7lId: e7l.id,
-            e7lTokenId,
-            mrcryptoTokenId,
-            linkedAt: block,
-            imageURL: image,
-            metadataURL: uri,
-          },
-        });
-
-        await prisma.e7L.update({
-          where: {
-            id: e7l.id,
-          },
-          data: {
-            lastBlockIndexed: block,
-          },
-        });
-      }
+      await prisma.e7L.update({
+        where: {
+          id: e7l.id,
+        },
+        data: {
+          lastBlockIndexed: block,
+        },
+      });
     }
   }
+
+  await prisma.e7L.update({
+    where: {
+      id: e7l.id,
+    },
+    data: {
+      lastBlockIndexed: currentBlock,
+    },
+  });
 }
 
 async function indexMrCrypto(currentBlock: bigint) {
@@ -150,49 +166,131 @@ async function indexMrCrypto(currentBlock: bigint) {
         },
       });
 
-      if (from !== zeroAddress) {
-        const filter = await client.createContractEventFilter({
-          abi: abiWETH,
-          eventName: "Transfer",
-          address: "0x7ceB23fD6bC0adD59E62ac25578270cFf1b9f619",
-          fromBlock: log.blockNumber ?? BigInt(0),
-          toBlock: log.blockNumber ?? BigInt(0),
-        });
-
-        const logs = await client.getFilterLogs({ filter });
-
-        const wethTransfer = logs.filter(
-          (l) =>
-            l.transactionHash == log.transactionHash &&
-            l.args.from == log.args.to
-        );
-
-        // Hay transacción de WETH
-        if (wethTransfer) {
-          const total = wethTransfer
-            .map((wt) => wt.args.value)
-            .reduce((a, b) => a + b, 0n);
-
-          if (total > 0n) {
-            console.log(
-              `WETH Transfer ${formatEther(total).substring(
-                0,
-                5
-              )} to ${from} on tx ${log.transactionHash}`
-            );
-
-            await prisma.payment.create({
-              data: {
-               Transfer: {connect: {id: transfer.id}}, 
-                amount: Number(formatEther(total)),
-                currency: "WETH",
-              }
-            })
-          }
-        }
+      if (from === zeroAddress) {
+        continue;
       }
+
+      const finded = await checkForEthTransfer(
+        log.blockNumber,
+        log.transactionHash ?? "",
+        from,
+        to,
+        transfer.id
+      );
+
+      if (finded) {
+        continue;
+      }
+
+      await checkForUSDCTransfer(
+        log.blockNumber,
+        log.transactionHash ?? "",
+        from,
+        to,
+        transfer.id
+      );
     }
   }
+}
+
+async function checkForEthTransfer(
+  blockNumber: bigint | null,
+  txHash: string,
+  from: string,
+  to: string,
+  transferId: string
+): Promise<boolean> {
+  const filter = await client.createContractEventFilter({
+    abi: abiWETH,
+    eventName: "Transfer",
+    address: "0x2791Bca1f2de4661ED88A30C99A7a9449Aa84174",
+    fromBlock: blockNumber ?? BigInt(0),
+    toBlock: blockNumber ?? BigInt(0),
+  });
+
+  const logs = await client.getFilterLogs({ filter });
+
+  const wethTransfer = logs.filter(
+    (l) => l.transactionHash == txHash && l.args.from == to
+  );
+
+  // Hay transacción de WETH
+  if (!wethTransfer) {
+    return false;
+  }
+
+  const total = wethTransfer
+    .map((wt) => wt.args.value)
+    .reduce((a, b) => a + b, 0n);
+
+  if (total > 0n) {
+    console.log(
+      `USDC Transfer ${formatEther(total).substring(
+        0,
+        5
+      )} to ${from} on tx ${txHash}`
+    );
+
+    await prisma.payment.create({
+      data: {
+        Transfer: { connect: { id: transferId } },
+        amount: Number(formatEther(total)),
+        currency: "WETH",
+      },
+    });
+  }
+
+  return true;
+}
+
+async function checkForUSDCTransfer(
+  blockNumber: bigint | null,
+  txHash: string,
+  from: string,
+  to: string,
+  transferId: string
+): Promise<boolean> {
+  const filter = await client.createContractEventFilter({
+    abi: abiWETH,
+    eventName: "Transfer",
+    address: "0x7ceB23fD6bC0adD59E62ac25578270cFf1b9f619",
+    fromBlock: blockNumber ?? BigInt(0),
+    toBlock: blockNumber ?? BigInt(0),
+  });
+
+  const logs = await client.getFilterLogs({ filter });
+
+  const wethTransfer = logs.filter(
+    (l) => l.transactionHash == txHash && l.args.from == to
+  );
+
+  // Hay transacción de WETH
+  if (!wethTransfer) {
+    return false;
+  }
+
+  const total = wethTransfer
+    .map((wt) => wt.args.value)
+    .reduce((a, b) => a + b, 0n);
+
+  if (total > 0n) {
+    console.log(
+      `WETH Transfer ${formatEther(total).substring(
+        0,
+        5
+      )} to ${from} on tx ${txHash}`
+    );
+
+    await prisma.payment.create({
+      data: {
+        Transfer: { connect: { id: transferId } },
+        amount: Number(formatEther(total)),
+        currency: "USDC",
+      },
+    });
+  }
+
+  return true;
 }
 
 async function updateOrCreateMrCrypto(

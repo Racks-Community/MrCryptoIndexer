@@ -9,7 +9,9 @@ builder.prismaObject("MrCrypto", {
     metadata: t.exposeString("metadataURL"),
     E7LTokens: t.relation("E7LTokensLinked"),
     Owner: t.relation("Owner"),
-    Transfers: t.relation("Transfers"),
+    Transfers: t.relation("Transfers", {
+      query: { orderBy: { blockNumber: "desc" } },
+    }),
   }),
 });
 
@@ -27,13 +29,27 @@ builder.prismaObject("Payment", {
   fields: (t) => ({
     amount: t.exposeFloat("amount"),
     currency: t.exposeString("currency"),
+    Transfer: t.relation("Transfer"),
   }),
 });
 
 builder.prismaObject("Holder", {
   fields: (t) => ({
     address: t.exposeString("address"),
-    mrCryptosOwned: t.relation("MrCryptosOwned"),
+    mrCryptosOwned: t.relation("MrCryptosOwned", {
+      query: { orderBy: { tokenId: "asc" } },
+    }),
+    numberOfMrCryptos: t.field({
+      select: {
+        MrCryptosOwned: {
+          orderBy: {
+            tokenId: "desc",
+          },
+        },
+      },
+      type: "Int",
+      resolve: (parent) => parent.MrCryptosOwned.length,
+    }),
   }),
 });
 
@@ -89,10 +105,27 @@ builder.queryFields((t) => ({
       });
     },
   }),
+  topHolders: t.prismaField({
+    type: ["Holder"],
+    args: { take: t.arg.int({ required: true, defaultValue: 10 }) },
+    resolve: (query, _parent, args) => {
+      return prisma.holder.findMany({
+        ...query,
+        take: args.take,
+        orderBy: {
+          MrCryptosOwned: { _count: "desc" },
+        },
+      });
+    },
+  }),
 }));
 
-const OrderByInput = builder.enumType("OrderByInput", {
-  values: {asc: {}, desc: {}},
+const OrderTypeInput = builder.enumType("OrderByInput", {
+  values: { asc: {}, desc: {} },
+});
+
+const SalesOrderByEnum = builder.enumType("SalesOrderByEnum", {
+  values: { blockNumber: {}, amount: {} },
 });
 
 builder.queryFields((t) => ({
@@ -101,18 +134,58 @@ builder.queryFields((t) => ({
     args: {
       first: t.arg.int({ required: true, defaultValue: 100 }),
       skip: t.arg.int({ required: true, defaultValue: 0 }),
-      order: t.arg({type: OrderByInput, required: true, defaultValue: "asc"})
+      order: t.arg({
+        type: OrderTypeInput,
+        required: true,
+        defaultValue: "desc",
+      }),
     },
     resolve: (query, _parent, args) =>
       prisma.transfer.findMany({
         ...query,
         skip: args.skip,
         take: args.first,
-        orderBy: [{
-          blockNumber: args.order,
-        },{
-          tokenId: args.order,  
-        }],
+        orderBy: [
+          {
+            blockNumber: args.order,
+          },
+          {
+            tokenId: args.order,
+          },
+        ],
+      }),
+  }),
+  sales: t.prismaField({
+    type: ["Payment"],
+    args: {
+      first: t.arg.int({ required: true, defaultValue: 100 }),
+      skip: t.arg.int({ required: true, defaultValue: 0 }),
+      order: t.arg({
+        type: OrderTypeInput,
+        required: true,
+        defaultValue: "desc",
+      }),
+      orderBy: t.arg({
+        type: SalesOrderByEnum,
+        required: true,
+        defaultValue: "blockNumber",
+      }),
+    },
+    resolve: (query, _parent, args) =>
+      prisma.payment.findMany({
+        ...query,
+        skip: args.skip,
+        take: args.first,
+        ...(args.orderBy === "amount" && {
+          orderBy: {
+            amount: args.order,
+          },
+        }),
+        ...(args.orderBy === "blockNumber" && {
+          orderBy: {
+            Transfer: { blockNumber: args.order },
+          },
+        }),
       }),
   }),
 }));

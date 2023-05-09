@@ -24,6 +24,7 @@ type E7LToken {
 type Holder {
   address: String!
   mrCryptosOwned: [MrCrypto!]!
+  numberOfMrCryptos: Int!
 }
 
 type MrCrypto {
@@ -41,6 +42,7 @@ enum OrderByInput {
 }
 
 type Payment {
+  Transfer: Transfer!
   amount: Float!
   currency: String!
 }
@@ -48,7 +50,14 @@ type Payment {
 type Query {
   mrCryptoByAddress(address: String!): [MrCrypto!]!
   mrCryptoById(data: TokenIdInput!): MrCrypto!
-  transfers(first: Int! = 100, order: OrderByInput! = asc, skip: Int! = 0): [Transfer!]!
+  sales(first: Int! = 100, order: OrderByInput! = desc, orderBy: SalesOrderByEnum! = blockNumber, skip: Int! = 0): [Payment!]!
+  topHolders(take: Int! = 10): [Holder!]!
+  transfers(first: Int! = 100, order: OrderByInput! = desc, skip: Int! = 0): [Transfer!]!
+}
+
+enum SalesOrderByEnum {
+  amount
+  blockNumber
 }
 
 input TokenIdInput {
