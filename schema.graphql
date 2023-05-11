@@ -3,6 +3,15 @@ The `BigInt` scalar type represents non-fractional signed whole numeric values.
 """
 scalar BigInt
 
+type CollectionInfo {
+  address: String!
+  description: String!
+  holders: Int!
+  lastSale: String!
+  name: String!
+  volumen: [Volumen!]!
+}
+
 """
 A date-time string at UTC, such as 2007-12-03T10:15:30Z, compliant with the `date-time` format outlined in section 5.6 of the RFC 3339 profile of the ISO 8601 standard for representation of dates and times using the Gregorian calendar.
 """
@@ -48,6 +57,7 @@ type Payment {
 }
 
 type Query {
+  collectionInfo: CollectionInfo!
   mrCryptoByAddress(address: String!): [MrCrypto!]!
   mrCryptoById(data: TokenIdInput!): MrCrypto!
   sales(first: Int! = 100, order: OrderByInput! = desc, orderBy: SalesOrderByEnum! = blockNumber, skip: Int! = 0): [Payment!]!
@@ -70,4 +80,9 @@ type Transfer {
   blockNumber: BigInt!
   from: String!
   to: String!
+}
+
+type Volumen {
+  amount: Float!
+  currency: String!
 }

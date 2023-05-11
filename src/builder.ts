@@ -21,15 +21,98 @@ export const builder = new SchemaBuilder<{
 }>({
   plugins: [PrismaPlugin, RelayPlugin],
   relayOptions: {
-    clientMutationId: 'omit',
-      cursorType: 'String',
+    clientMutationId: "omit",
+    cursorType: "String",
   },
   prisma: {
     client: prisma,
   },
 });
 
-builder.queryType({});
+export interface IVolumen {
+  currency: string;
+  amount: number;
+}
+
+export interface ICollectionInfo {
+  name: string;
+  holders: number;
+  lastSale: string;
+  address: string;
+  description: string;
+  volumen: IVolumen[];
+}
+
+export const CollectionInfo =
+  builder.objectRef<ICollectionInfo>("CollectionInfo");
+export const Volumen = builder.objectRef<IVolumen>("Volumen");
+
+Volumen.implement({
+  fields: (t) => ({
+    currency: t.exposeString("currency"),
+    amount: t.exposeFloat("amount"),
+  }),
+});
+
+CollectionInfo.implement({
+  fields: (t) => ({
+    name: t.exposeString("name"),
+    holders: t.exposeInt("holders"),
+    address: t.exposeString("address"),
+    lastSale: t.exposeString("lastSale"),
+    description: t.exposeString("description"),
+    volumen: t.expose("volumen", { type: [Volumen] }),
+  }),
+});
+
+builder.queryType({
+  fields: (t) => ({
+    collectionInfo: t.field({
+      type: CollectionInfo,
+      resolve: async () => {
+        const numHolders = await prisma.holder.count({
+          where: {
+            // have al least one token
+            MrCryptosOwned: {
+              some: {},
+            },
+          },
+        });
+
+        const lastSale = await prisma.payment.findFirstOrThrow({
+          orderBy: {
+            Transfer: {
+              blockNumber: "desc",
+            },
+          },
+        });
+
+        const currencies = await prisma.payment.groupBy({
+          _sum: {
+            amount: true,
+          },
+          by: ["currency"],
+        });
+
+        const volumen: IVolumen[] = currencies.map((c) => ({
+          amount: c._sum.amount ?? 0,
+          currency: c.currency,
+        }));
+
+        return {
+          name: "Mr. Crypto by Racksmafia",
+          description: "The official RACKS® NFT collection",
+          holders: numHolders,
+          address: "0xeF453154766505FEB9dBF0a58E6990fd6eB66969",
+          lastSale: `${Number(lastSale.amount.toFixed(3))} ${
+            lastSale.currency
+          }`,
+          volumen,
+        };
+      },
+    }),
+  }),
+});
 
 builder.addScalarType("DateTime", DateTimeResolver, {});
 builder.addScalarType("BigInt", BigIntResolver, {});
