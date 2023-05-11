@@ -22,14 +22,20 @@ server.listen(4000, () => {
   `);
 });
 
-indexerProcess()
-  .then(() => console.log("Indexer finished"))
-  .catch((e) => {
-    console.error("Indexer failed");
+function indexer() {
+  indexerProcess()
+    .then(() => console.log("Indexer finished"))
+    .catch((e) => {
+      console.error("Indexer failed");
 
-    const { message, stack } = e;
-    console.error(message);
-    console.error(stack);
+      const { message, stack } = e;
+      console.error(message);
+      console.error(stack);
 
-    process.exit(1);
-  });
+      process.exit(1);
+    });
+
+  setTimeout(indexer, 1000 * 60 * 5); // 5 minutes
+}
+
+indexer();
