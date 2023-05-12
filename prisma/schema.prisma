@@ -18,6 +18,7 @@ model Holder {
   id             String     @id @default(uuid())
   address        String     @unique
   MrCryptosOwned MrCrypto[]
+  E7LTokensOwned E7LToken[]
 
   @@index([address])
 }
@@ -46,15 +47,17 @@ model E7L {
 }
 
 model E7LToken {
-  id              String   @id @default(uuid())
+  id              String    @id @default(uuid())
   e7lTokenId      Int
-  mrcryptoTokenId Int
-  MrCrypto        MrCrypto @relation(fields: [mrcryptoTokenId], references: [tokenId])
+  mrcryptoTokenId Int?
+  MrCrypto        MrCrypto? @relation(fields: [mrcryptoTokenId], references: [tokenId])
   linkedAt        BigInt
-  E7L             E7L      @relation(fields: [e7lId], references: [id])
+  E7L             E7L       @relation(fields: [e7lId], references: [id])
   e7lId           String
   metadataURL     String
   imageURL        String
+  ownerId         String
+  Owner           Holder    @relation(fields: [ownerId], references: [id])
 
   @@unique([e7lId, mrcryptoTokenId])
   @@index([e7lId, mrcryptoTokenId])
@@ -63,7 +66,7 @@ model E7LToken {
 model Transfer {
   id          String   @id @default(uuid())
   blockNumber BigInt
-  hash        String   
+  hash        String
   from        String
   to          String
   tokenId     Int

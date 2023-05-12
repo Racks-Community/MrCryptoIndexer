@@ -1,6 +1,16 @@
 import { builder } from "@/builder";
 import { prisma } from "@/db";
-import { getAddress } from "viem";
+import { abiMrcrypto } from "@/indexer/abis/abi-mrcrypto";
+import { createPublicClient, getAddress, http } from "viem";
+import { polygon } from "viem/chains";
+
+const ALCHEMY_URL = process.env.RPC_URL ?? "";
+const transport = http(ALCHEMY_URL);
+
+const client = createPublicClient({
+  chain: polygon,
+  transport,
+});
 
 builder.prismaObject("MrCrypto", {
   fields: (t) => ({
@@ -57,9 +67,40 @@ builder.prismaObject("E7LToken", {
   fields: (t) => ({
     mrCrypto: t.relation("MrCrypto"),
     E7L: t.relation("E7L"),
-    toeknId: t.exposeInt("e7lTokenId"),
+    tokenId: t.exposeInt("e7lTokenId"),
     imageURL: t.exposeString("imageURL"),
     metadata: t.exposeString("metadataURL"),
+    synced: t.field({
+      type: "Boolean",
+      resolve: async (e7l) => {
+        const rawE7L = await prisma.e7LToken.findUniqueOrThrow({
+          where: {
+            id: e7l.id,
+          },
+          select: {
+            MrCrypto: {
+              select: {
+                Owner: {
+                  select: {
+                    address: true,
+                  },
+                },
+              },
+            },
+            Owner: {
+              select: {
+                address: true,
+              },
+            },
+          },
+        });
+
+        const mrCryptoOwner = rawE7L.MrCrypto?.Owner.address;
+        const e7lOwner = rawE7L.MrCrypto?.Owner.address;
+
+        return mrCryptoOwner === e7lOwner;
+      },
+    }),
   }),
 });
 
@@ -187,5 +228,23 @@ builder.queryFields((t) => ({
           },
         }),
       }),
+  }),
+}));
+
+builder.queryFields((t) => ({
+  e7lTokens: t.prismaField({
+    type: ["E7LToken"],
+    args: {
+      first: t.arg.int({ required: true, defaultValue: 100 }),
+      skip: t.arg.int({ required: true, defaultValue: 0 }),
+    },
+    resolve: (query, _parent, args) => {
+      return prisma.e7LToken.findMany({
+        ...query,
+        skip: args.skip,
+        take: args.first,
+        orderBy: [{ E7L: { name: "asc" } }, { e7lTokenId: "asc" }],
+      });
+    },
   }),
 }));

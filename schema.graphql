@@ -27,7 +27,8 @@ type E7LToken {
   imageURL: String!
   metadata: String!
   mrCrypto: MrCrypto!
-  toeknId: Int!
+  synced: Boolean!
+  tokenId: Int!
 }
 
 type Holder {
@@ -58,6 +59,7 @@ type Payment {
 
 type Query {
   collectionInfo: CollectionInfo!
+  e7lTokens(first: Int! = 100, skip: Int! = 0): [E7LToken!]!
   mrCryptoByAddress(address: String!): [MrCrypto!]!
   mrCryptoById(data: TokenIdInput!): MrCrypto!
   sales(first: Int! = 100, order: OrderByInput! = desc, orderBy: SalesOrderByEnum! = blockNumber, skip: Int! = 0): [Payment!]!
