@@ -68,13 +68,17 @@ export async function indexMrCrypto(currentBlock: bigint) {
         continue;
       }
 
-      await checkForEthTransfer(
+      const ethFound = await checkForEthTransfer(
         log.blockNumber,
         log.transactionHash ?? "",
         from,
         to,
         transfer.id
       );
+
+      if (ethFound) {
+        continue;
+      }
 
       await checkForUSDCTransfer(
         log.blockNumber,
