@@ -108,6 +108,49 @@ builder.prismaObject("E7L", {
   fields: (t) => ({
     E7LTokens: t.relation("Tokens"),
     name: t.exposeString("name"),
+    supply: t.field({
+      type: "Int",
+      resolve: () => {
+        return prisma.e7LToken.count();
+      },
+    }),
+    synchronized: t.field({
+      type: "Int",
+      resolve: async (e7l) => {
+        const res = await prisma.e7LToken.findMany({
+          where: {
+            id: e7l.id,
+          },
+          select: {
+            ownerId: true,
+            MrCrypto: {
+              select: {
+                Owner: {
+                  select: {
+                    id: true,
+                  },
+                },
+              },
+            },
+          },
+        });
+
+        return res.filter((e7l) => e7l.ownerId === e7l.MrCrypto?.Owner.id)
+          .length;
+      },
+    }),
+    linked: t.field({
+      type: "Int",
+      resolve: () => {
+        return prisma.e7LToken.count({
+          where: {
+            mrcryptoTokenId: {
+              not: null,
+            },
+          },
+        });
+      },
+    }),
   }),
 });
 
@@ -245,6 +288,12 @@ builder.queryFields((t) => ({
         take: args.first,
         orderBy: [{ E7L: { name: "asc" } }, { e7lTokenId: "asc" }],
       });
+    },
+  }),
+  E7L: t.prismaField({
+    type: ["E7L"],
+    resolve: (query) => {
+      return prisma.e7L.findMany(query);
     },
   }),
 }));
