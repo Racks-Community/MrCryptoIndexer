@@ -19,14 +19,19 @@ scalar DateTime
 
 type E7L {
   E7LTokens: [E7LToken!]!
+  linked: Int!
   name: String!
+  supply: Int!
+  synchronized: Int!
 }
 
 type E7LToken {
   E7L: E7L!
+  Owner: Holder!
   imageURL: String!
+  linked: Boolean!
   metadata: String!
-  mrCrypto: MrCrypto!
+  mrCrypto: MrCrypto
   synced: Boolean!
   tokenId: Int!
 }
@@ -58,6 +63,7 @@ type Payment {
 }
 
 type Query {
+  E7L: [E7L!]!
   collectionInfo: CollectionInfo!
   e7lTokens(first: Int! = 100, skip: Int! = 0): [E7LToken!]!
   mrCryptoByAddress(address: String!): [MrCrypto!]!

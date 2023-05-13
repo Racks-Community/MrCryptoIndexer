@@ -34,6 +34,16 @@ export async function indexMrCrypto(currentBlock: bigint) {
     });
 
     const logs = await client.getFilterLogs({ filter });
+    const logsOrdered = logs.sort((a, b) => {
+      const aBlock = a.blockNumber ?? BigInt(0);
+      const bBlock = b.blockNumber ?? BigInt(0);
+
+      if (aBlock > bBlock) return 1;
+
+      if (aBlock < bBlock) return -1;
+
+      return 0;
+    });
 
     for (const log of logs) {
       const tokenId = Number(log.args.tokenId);

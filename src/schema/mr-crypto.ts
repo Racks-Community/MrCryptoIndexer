@@ -1,16 +1,6 @@
 import { builder } from "@/builder";
 import { prisma } from "@/db";
-import { abiMrcrypto } from "@/indexer/abis/abi-mrcrypto";
-import { createPublicClient, getAddress, http } from "viem";
-import { polygon } from "viem/chains";
-
-const ALCHEMY_URL = process.env.RPC_URL ?? "";
-const transport = http(ALCHEMY_URL);
-
-const client = createPublicClient({
-  chain: polygon,
-  transport,
-});
+import { getAddress } from "viem";
 
 builder.prismaObject("MrCrypto", {
   fields: (t) => ({
@@ -65,11 +55,16 @@ builder.prismaObject("Holder", {
 
 builder.prismaObject("E7LToken", {
   fields: (t) => ({
-    mrCrypto: t.relation("MrCrypto"),
+    mrCrypto: t.relation("MrCrypto", { nullable: true }),
+    Owner: t.relation("Owner"),
     E7L: t.relation("E7L"),
     tokenId: t.exposeInt("e7lTokenId"),
     imageURL: t.exposeString("imageURL"),
     metadata: t.exposeString("metadataURL"),
+    linked: t.field({
+      type: "Boolean",
+      resolve: async (e7l) => e7l.mrcryptoTokenId !== null,
+    }),
     synced: t.field({
       type: "Boolean",
       resolve: async (e7l) => {
@@ -96,9 +91,9 @@ builder.prismaObject("E7LToken", {
         });
 
         const mrCryptoOwner = rawE7L.MrCrypto?.Owner.address;
-        const e7lOwner = rawE7L.MrCrypto?.Owner.address;
+        const e7lOwner = rawE7L.Owner.address;
 
-        return mrCryptoOwner === e7lOwner;
+        return mrCryptoOwner === e7lOwner && mrCryptoOwner !== null;
       },
     }),
   }),
@@ -110,8 +105,25 @@ builder.prismaObject("E7L", {
     name: t.exposeString("name"),
     supply: t.field({
       type: "Int",
-      resolve: () => {
-        return prisma.e7LToken.count();
+      resolve: (e7l) => {
+        return prisma.e7LToken.count({
+          where: {
+            e7lId: e7l.id,
+          },
+        });
+      },
+    }),
+    linked: t.field({
+      type: "Int",
+      resolve: (e7l) => {
+        return prisma.e7LToken.count({
+          where: {
+            e7lId: e7l.id,
+            mrcryptoTokenId: {
+              not: null,
+            },
+          },
+        });
       },
     }),
     synchronized: t.field({
@@ -119,36 +131,22 @@ builder.prismaObject("E7L", {
       resolve: async (e7l) => {
         const res = await prisma.e7LToken.findMany({
           where: {
-            id: e7l.id,
+            e7lId: e7l.id,
+            MrCrypto: {
+              isNot: null,
+            },
           },
           select: {
             ownerId: true,
             MrCrypto: {
               select: {
-                Owner: {
-                  select: {
-                    id: true,
-                  },
-                },
+                ownerId: true,
               },
             },
           },
         });
 
-        return res.filter((e7l) => e7l.ownerId === e7l.MrCrypto?.Owner.id)
-          .length;
-      },
-    }),
-    linked: t.field({
-      type: "Int",
-      resolve: () => {
-        return prisma.e7LToken.count({
-          where: {
-            mrcryptoTokenId: {
-              not: null,
-            },
-          },
-        });
+        return res.filter((e7l) => e7l.ownerId == e7l.MrCrypto?.ownerId).length;
       },
     }),
   }),
