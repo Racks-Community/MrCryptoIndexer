@@ -59,7 +59,7 @@ model E7LToken {
   ownerId         String
   Owner           Holder    @relation(fields: [ownerId], references: [id])
 
-  @@unique([e7lId, mrcryptoTokenId])
+  @@unique([e7lId, e7lTokenId])
   @@index([e7lId, mrcryptoTokenId])
 }
 

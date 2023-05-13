@@ -113,7 +113,7 @@ async function checkForEthTransfer(
   );
 
   // NO hay transacción de WETH
-  if (!wethTransfer) {
+  if (wethTransfer.length == 0) {
     return false;
   }
 

@@ -54,9 +54,9 @@ async function indexLinks(e7l: E7L, block: bigint, currentBlock: bigint) {
 
     await prisma.e7LToken.update({
       where: {
-        e7lId_mrcryptoTokenId: {
+        e7lId_e7lTokenId: {
           e7lId: e7l.id,
-          mrcryptoTokenId,
+          e7lTokenId,
         },
       },
       data: {
@@ -79,12 +79,17 @@ async function indexTransfers(e7l: E7L, block: bigint, currentBlock: bigint) {
   const logs = await client.getFilterLogs({ filter });
 
   for (let log of logs) {
-    const from = log.args.from;
+    const to = log.args.to;
     const e7lTokenId = Number(log.args.tokenId);
     const block = log.blockNumber ?? BigInt(0);
 
-    const existToken = await prisma.e7LToken.findFirst({
-      where: { e7lTokenId },
+    const existToken = await prisma.e7LToken.findUnique({
+      where: {
+        e7lId_e7lTokenId: {
+          e7lId: e7l.id,
+          e7lTokenId,
+        },
+      },
     });
 
     if (existToken) {
@@ -96,10 +101,10 @@ async function indexTransfers(e7l: E7L, block: bigint, currentBlock: bigint) {
           Owner: {
             connectOrCreate: {
               create: {
-                address: from,
+                address: to,
               },
               where: {
-                address: from,
+                address: to,
               },
             },
           },
@@ -134,10 +139,10 @@ async function indexTransfers(e7l: E7L, block: bigint, currentBlock: bigint) {
         Owner: {
           connectOrCreate: {
             create: {
-              address: from,
+              address: to,
             },
             where: {
-              address: from,
+              address: to,
             },
           },
         },
