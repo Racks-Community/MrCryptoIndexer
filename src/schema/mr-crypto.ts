@@ -27,9 +27,15 @@ builder.prismaObject("Transfer", {
 
 builder.prismaObject("Payment", {
   fields: (t) => ({
-    amount: t.exposeFloat("amount"),
-    currency: t.exposeString("currency"),
+    Currencies: t.relation("Currency"),
     Transfer: t.relation("Transfer"),
+  }),
+});
+
+builder.prismaObject("Currency", {
+  fields: (t) => ({
+    amount: t.exposeInt("amount"),
+    name: t.exposeString("name"),
   }),
 });
 
@@ -258,16 +264,7 @@ builder.queryFields((t) => ({
         ...query,
         skip: args.skip,
         take: args.first,
-        ...(args.orderBy === "amount" && {
-          orderBy: {
-            amount: args.order,
-          },
-        }),
-        ...(args.orderBy === "blockNumber" && {
-          orderBy: {
-            Transfer: { blockNumber: args.order },
-          },
-        }),
+        // TODO: Make this work
       }),
   }),
 }));

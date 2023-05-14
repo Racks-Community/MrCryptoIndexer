@@ -79,24 +79,37 @@ builder.queryType({
           },
         });
 
-        const lastSale = await prisma.payment.findFirstOrThrow({
+        const lastSale = await prisma.transfer.findFirstOrThrow({
           orderBy: {
-            Transfer: {
-              blockNumber: "desc",
+            blockNumber: "desc",
+          },
+          where: {
+            paymentId: { not: null },
+          },
+          select: {
+            Payment: {
+              select: {
+                Currency: {
+                  select: {
+                    name: true,
+                    amount: true,
+                  },
+                },
+              },
             },
           },
         });
 
-        const currencies = await prisma.payment.groupBy({
+        const currencies = await prisma.currency.groupBy({
           _sum: {
             amount: true,
           },
-          by: ["currency"],
+          by: ["name"],
         });
 
         const volumen: IVolumen[] = currencies.map((c) => ({
           amount: c._sum.amount ?? 0,
-          currency: c.currency,
+          currency: c.name,
         }));
 
         return {
@@ -104,9 +117,9 @@ builder.queryType({
           description: "The official RACKS® NFT collection",
           holders: numHolders,
           address: "0xeF453154766505FEB9dBF0a58E6990fd6eB66969",
-          lastSale: `${Number(lastSale.amount.toFixed(3))} ${
-            lastSale.currency
-          }`,
+          lastSale: `${Number(
+            lastSale.Payment!.Currency[0].amount.toFixed(3)
+          )} ${lastSale.Payment!.Currency[0].name}`,
           volumen,
         };
       },

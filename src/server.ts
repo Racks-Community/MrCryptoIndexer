@@ -22,18 +22,20 @@ server.listen(4000, () => {
   `);
 });
 
-function indexer() {
-  indexerProcess()
-    .then(() => console.log("Indexer finished"))
-    .catch((e) => {
-      console.error("Indexer failed");
+async function indexer() {
+  console.log("Indexer stared ⚒️");
 
-      const { message, stack } = e;
-      console.error(message);
-      console.error(stack);
+  await indexerProcess().catch((e) => {
+    console.error("Indexer failed ❌ 😭");
 
-      process.exit(1);
-    });
+    const { message, stack } = e;
+    console.error(message);
+    console.error(stack);
+
+    process.exit(1);
+  });
+
+  console.log("Indexer finished ✅ 🎉 😄");
 
   setTimeout(indexer, 1000 * 60 * 5); // 5 minutes
 }
