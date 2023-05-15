@@ -27,6 +27,7 @@ builder.prismaObject("Transfer", {
 
 builder.prismaObject("Payment", {
   fields: (t) => ({
+    blockNumber: t.expose("blockNumber", { type: "BigInt" }),
     Currencies: t.relation("Currency"),
     Transfer: t.relation("Transfer"),
   }),

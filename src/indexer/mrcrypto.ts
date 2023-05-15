@@ -98,6 +98,7 @@ export async function indexMrCrypto(currentBlock: bigint) {
       if (data.length > 0)
         payment = await prisma.payment.create({
           data: {
+            blockNumber,
             Currency: {
               createMany: {
                 data,
