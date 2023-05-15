@@ -34,7 +34,7 @@ builder.prismaObject("Payment", {
 
 builder.prismaObject("Currency", {
   fields: (t) => ({
-    amount: t.exposeInt("amount"),
+    amount: t.exposeFloat("amount"),
     name: t.exposeString("name"),
   }),
 });
