@@ -72,7 +72,7 @@ type Query {
   collectionInfo: CollectionInfo!
   e7lTokens(first: Int! = 100, skip: Int! = 0): [E7LToken!]!
   e7lTokensByAddress(address: String!): [E7LToken!]!
-  mrCryptoById(data: TokenIdInput!): MrCrypto!
+  mrCryptoById(tokenId: Int!): MrCrypto!
   mrCryptosByAddress(address: String!): [MrCrypto!]!
   sales(first: Int! = 100, order: OrderByInput! = desc, orderBy: SalesOrderByEnum! = blockNumber, skip: Int! = 0): [Payment!]!
   topHolders(take: Int! = 10): [Holder!]!
@@ -82,10 +82,6 @@ type Query {
 enum SalesOrderByEnum {
   amount
   blockNumber
-}
-
-input TokenIdInput {
-  tokenId: Int!
 }
 
 type Transfer {
