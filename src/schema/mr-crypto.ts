@@ -20,6 +20,7 @@ builder.prismaObject("Transfer", {
     from: t.exposeString("from"),
     to: t.exposeString("to"),
     MrCrypto: t.relation("Token"),
+    txHash: t.exposeString("hash"),
     blockNumber: t.expose("blockNumber", { type: "BigInt" }),
     Payment: t.relation("Payment", { nullable: true }),
   }),
@@ -274,6 +275,22 @@ builder.queryFields((t) => ({
 }));
 
 builder.queryFields((t) => ({
+  e7lTokesByAddress: t.prismaField({
+    type: ["E7LToken"],
+    args: { address: t.arg.string({ required: true }) },
+    resolve: (query, _parent, args) => {
+      const address = getAddress(args.address);
+
+      return prisma.e7LToken.findMany({
+        ...query,
+        where: {
+          Owner: {
+            address,
+          },
+        },
+      });
+    },
+  }),
   e7lTokens: t.prismaField({
     type: ["E7LToken"],
     args: {
