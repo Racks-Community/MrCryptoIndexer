@@ -174,6 +174,7 @@ async function checkForEthTransfer(
   return Number(formatEther(total));
 }
 
+const USDC_DECIMALS = 6;
 async function checkForUSDCTransfer(
   blockNumber: bigint | null,
   txHash: string,
@@ -206,7 +207,7 @@ async function checkForUSDCTransfer(
     return 0;
   }
 
-  return Number(formatEther(total));
+  return Number(formatUnits(total, USDC_DECIMALS));
 }
 
 async function updateOrCreateMrCrypto(
