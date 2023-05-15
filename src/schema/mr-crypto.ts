@@ -266,6 +266,9 @@ builder.queryFields((t) => ({
         skip: args.skip,
         take: args.first,
         // TODO: Make this work
+        orderBy: {
+          blockNumber: args.order,
+        },
       }),
   }),
 }));
