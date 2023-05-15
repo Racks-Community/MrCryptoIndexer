@@ -160,12 +160,6 @@ builder.prismaObject("E7L", {
   }),
 });
 
-const TokenIdInput = builder.inputType("TokenIdInput", {
-  fields: (t) => ({
-    tokenId: t.int({ required: true }),
-  }),
-});
-
 builder.queryFields((t) => ({
   mrCryptosByAddress: t.prismaField({
     type: ["MrCrypto"],
@@ -185,12 +179,12 @@ builder.queryFields((t) => ({
   }),
   mrCryptoById: t.prismaField({
     type: "MrCrypto",
-    args: { data: t.arg({ type: TokenIdInput, required: true }) },
+    args: { tokenId: t.arg.int({ required: true }) },
     resolve: (query, _parent, args) => {
       return prisma.mrCrypto.findUniqueOrThrow({
         ...query,
         where: {
-          tokenId: args.data.tokenId,
+          tokenId: args.tokenId,
         },
       });
     },
