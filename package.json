@@ -11,8 +11,6 @@
     "build:schema": "ts-node -r tsconfig-paths/register src/schema/index.ts",
     "generate": "npm -s run generate:prisma",
     "generate:prisma": "prisma generate",
-    "foo": "ts-node -r tsconfig-paths/register ./src/indexer/index.ts",
-    "bar": "ts-node -r tsconfig-paths/register ./src/indexer/script.ts",
     "prisma:reset": "prisma db push --force-reset && npx prisma db seed"
   },
   "prisma": {
