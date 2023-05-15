@@ -13,7 +13,7 @@ type CollectionInfo {
 }
 
 type Currency {
-  amount: Int!
+  amount: Float!
   name: String!
 }
 
@@ -64,14 +64,16 @@ enum OrderByInput {
 type Payment {
   Currencies: [Currency!]!
   Transfer: [Transfer!]!
+  blockNumber: BigInt!
 }
 
 type Query {
   E7L: [E7L!]!
   collectionInfo: CollectionInfo!
   e7lTokens(first: Int! = 100, skip: Int! = 0): [E7LToken!]!
-  mrCryptoByAddress(address: String!): [MrCrypto!]!
+  e7lTokensByAddress(address: String!): [E7LToken!]!
   mrCryptoById(data: TokenIdInput!): MrCrypto!
+  mrCryptosByAddress(address: String!): [MrCrypto!]!
   sales(first: Int! = 100, order: OrderByInput! = desc, orderBy: SalesOrderByEnum! = blockNumber, skip: Int! = 0): [Payment!]!
   topHolders(take: Int! = 10): [Holder!]!
   transfers(first: Int! = 100, order: OrderByInput! = desc, skip: Int! = 0): [Transfer!]!
@@ -92,6 +94,7 @@ type Transfer {
   blockNumber: BigInt!
   from: String!
   to: String!
+  txHash: String!
 }
 
 type Volumen {

@@ -167,7 +167,7 @@ const TokenIdInput = builder.inputType("TokenIdInput", {
 });
 
 builder.queryFields((t) => ({
-  mrCryptoByAddress: t.prismaField({
+  mrCryptosByAddress: t.prismaField({
     type: ["MrCrypto"],
     args: { address: t.arg.string({ required: true }) },
     resolve: (query, _parent, args) => {
@@ -275,7 +275,7 @@ builder.queryFields((t) => ({
 }));
 
 builder.queryFields((t) => ({
-  e7lTokesByAddress: t.prismaField({
+  e7lTokensByAddress: t.prismaField({
     type: ["E7LToken"],
     args: { address: t.arg.string({ required: true }) },
     resolve: (query, _parent, args) => {
