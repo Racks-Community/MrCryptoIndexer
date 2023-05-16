@@ -111,6 +111,7 @@ builder.prismaObject("E7L", {
   fields: (t) => ({
     E7LTokens: t.relation("Tokens"),
     name: t.exposeString("name"),
+    contractAddress: t.exposeString("contractAddress"),
     supply: t.field({
       type: "Int",
       resolve: (e7l) => {
