@@ -308,3 +308,21 @@ builder.queryFields((t) => ({
     },
   }),
 }));
+
+builder.queryFields((t) => ({
+  mrCryptoTokens: t.prismaField({
+    type: ["MrCrypto"],
+    args: {
+      first: t.arg.int({ required: true, defaultValue: 100 }),
+      skip: t.arg.int({ required: true, defaultValue: 0 }),
+    },
+    resolve: (query, _parent, args) => {
+      return prisma.mrCrypto.findMany({
+        ...query,
+        skip: args.skip,
+        take: args.first,
+        orderBy: [{ tokenId: "asc" }],
+      });
+    },
+  }),
+}));
