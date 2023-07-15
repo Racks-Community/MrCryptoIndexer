@@ -110,6 +110,7 @@ builder.prismaObject("E7LToken", {
 builder.prismaObject("E7L", {
   fields: (t) => ({
     E7LTokens: t.relation("Tokens"),
+    imageURL: t.exposeString("imageURL"),
     name: t.exposeString("name"),
     contractAddress: t.exposeString("contractAddress"),
     supply: t.field({

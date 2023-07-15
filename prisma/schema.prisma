@@ -43,6 +43,7 @@ model E7L {
   deployedBlock    BigInt
   contractAddress  String
   lastBlockIndexed BigInt
+  imageURL         String
   Tokens           E7LToken[]
 }
 
