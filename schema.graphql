@@ -25,6 +25,7 @@ scalar DateTime
 type E7L {
   E7LTokens: [E7LToken!]!
   contractAddress: String!
+  imageURL: String!
   linked: Int!
   name: String!
   supply: Int!

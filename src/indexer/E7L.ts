@@ -83,6 +83,10 @@ async function indexTransfers(e7l: E7L, block: bigint, currentBlock: bigint) {
     const e7lTokenId = Number(log.args.tokenId);
     const block = log.blockNumber ?? BigInt(0);
 
+    if (!to) {
+      throw new Error("E7L indexing: Error indexing transfer");
+    }
+
     const existToken = await prisma.e7LToken.findUnique({
       where: {
         e7lId_e7lTokenId: {

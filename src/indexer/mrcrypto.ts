@@ -76,7 +76,7 @@ export async function indexMrCrypto(currentBlock: bigint) {
       const blockNumber = logsOrdered[0].blockNumber;
       const to = logsOrdered[0].args.to;
 
-      if (!txHash || !blockNumber) {
+      if (!txHash || !blockNumber || !to) {
         throw new Error("Mr. Crypto indexing: No txHash or blockNumber");
       }
 
@@ -112,6 +112,10 @@ export async function indexMrCrypto(currentBlock: bigint) {
         const to = log.args.to;
         const from = log.args.from;
         const eventBlock = blockNumber;
+
+        if (!tokenId || !to || !from) {
+          throw new Error("Mr. Crypto indexing: Error parsing event log");
+        }
 
         await updateOrCreateMrCrypto(tokenId, to, eventBlock);
 
@@ -165,7 +169,7 @@ async function checkForEthTransfer(
   }
 
   const total = wethTransfer
-    .map((wt) => wt.args.value)
+    .map((wt) => wt.args.value ?? 0n)
     .reduce((a, b) => a + b, 0n);
 
   if (total == 0n) {
@@ -201,10 +205,10 @@ async function checkForUSDCTransfer(
   }
 
   const total = wethTransfer
-    .map((wt) => wt.args.value)
+    .map((wt) => wt.args.value ?? 0n)
     .reduce((a, b) => a + b, 0n);
 
-  if (total == 0n) {
+  if (total == 0n || total == undefined) {
     return 0;
   }
 
@@ -222,7 +226,7 @@ async function updateOrCreateMrCrypto(
     },
     create: {
       tokenId: tokenId,
-      imageURL: metadata[tokenId],
+      imageURL: metadata[tokenId].image,
       metadataURL: `https://apinft.racksmafia.com/api/${tokenId}.json`,
       lastTransferBlock: block,
       Owner: {

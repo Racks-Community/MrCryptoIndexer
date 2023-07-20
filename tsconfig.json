@@ -15,5 +15,6 @@
       "viem": ["node_modules/viem"]
     }
   },
-  "include": ["src/**/*"]
+  "include": ["src/**/*.ts"],
+  "exclude": ["node_modules"]
 }
