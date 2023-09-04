@@ -1,0 +1,18 @@
+# .kodiak.toml
+# Minimal config. version is the only required field.
+version = 1
+
+[approve]
+auto_approve_usernames = ["dependabot", "renovate", "pull"]
+
+[merge]
+method = "squash"
+automerge_label = ["🚀 merge", "⬆️ dependencies", "⤵️ pull"]
+
+[merge.automerge_dependencies]
+# only auto merge "minor" and "patch" version upgrades.
+versions = ["minor", "patch"]
+usernames = ["dependabot", "renovate"]
+
+[update]
+autoupdate_label = "♻️ autoupdate"
