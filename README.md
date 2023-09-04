@@ -5,7 +5,7 @@
 ### Install dependencies
 
 ```bash
-pnpm i 
+pnpm i
 ```
 
 ### Create `.env` file and complete it

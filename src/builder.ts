@@ -118,7 +118,7 @@ builder.queryType({
           holders: numHolders,
           address: "0xeF453154766505FEB9dBF0a58E6990fd6eB66969",
           lastSale: `${Number(
-            lastSale.Payment!.Currency[0].amount.toFixed(3)
+            lastSale.Payment!.Currency[0].amount.toFixed(3),
           )} ${lastSale.Payment!.Currency[0].name}`,
           volumen,
         };

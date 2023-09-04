@@ -30,7 +30,7 @@ export async function indexMrCrypto(currentBlock: bigint) {
     const fromBlock = block;
     const toBlock = bigIntMin(
       block + BLOCKS_PER_QUERY - BigInt(1),
-      currentBlock
+      currentBlock,
     );
     const filter = await client.createContractEventFilter({
       abi: abiMrcrypto,
@@ -54,20 +54,23 @@ export async function indexMrCrypto(currentBlock: bigint) {
       return 0;
     });
 
-    const logsGroupByTx = logsOrdered.reduce((acc, log) => {
-      const txHash = log.transactionHash;
+    const logsGroupByTx = logsOrdered.reduce(
+      (acc, log) => {
+        const txHash = log.transactionHash;
 
-      if (!txHash) {
-        throw new Error("Mr. Crypto indexing: No txHash");
-      }
+        if (!txHash) {
+          throw new Error("Mr. Crypto indexing: No txHash");
+        }
 
-      if (!acc[txHash]) {
-        acc[txHash] = [];
-      }
+        if (!acc[txHash]) {
+          acc[txHash] = [];
+        }
 
-      acc[txHash].push(log);
-      return acc;
-    }, {} as Record<string, typeof logs>);
+        acc[txHash].push(log);
+        return acc;
+      },
+      {} as Record<string, typeof logs>,
+    );
 
     const logsGroupByTxArray = Object.values(logsGroupByTx);
 
@@ -147,7 +150,7 @@ export async function indexMrCrypto(currentBlock: bigint) {
 async function checkForEthTransfer(
   blockNumber: bigint,
   txHash: string,
-  to: string
+  to: string,
 ): Promise<number> {
   const filter = await client.createContractEventFilter({
     abi: abiWETH,
@@ -160,7 +163,7 @@ async function checkForEthTransfer(
   const logs = await client.getFilterLogs({ filter });
 
   const wethTransfer = logs.filter(
-    (l) => l.transactionHash == txHash && l.args.from == to
+    (l) => l.transactionHash == txHash && l.args.from == to,
   );
 
   // NO hay transacción de WETH
@@ -183,7 +186,7 @@ const USDC_DECIMALS = 6;
 async function checkForUSDCTransfer(
   blockNumber: bigint | null,
   txHash: string,
-  to: string
+  to: string,
 ): Promise<number> {
   const filter = await client.createContractEventFilter({
     abi: abiWETH,
@@ -196,7 +199,7 @@ async function checkForUSDCTransfer(
   const logs = await client.getFilterLogs({ filter });
 
   const wethTransfer = logs.filter(
-    (l) => l.transactionHash == txHash && l.args.from == to
+    (l) => l.transactionHash == txHash && l.args.from == to,
   );
 
   // Hay transacción de WETH
@@ -218,7 +221,7 @@ async function checkForUSDCTransfer(
 async function updateOrCreateMrCrypto(
   tokenId: number,
   to: string,
-  block: bigint
+  block: bigint,
 ) {
   await prisma.mrCrypto.upsert({
     where: {

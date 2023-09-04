@@ -6,7 +6,7 @@ import { E7L } from "@prisma/client";
 export async function indexE7L(
   lastBlockIndexed: bigint,
   currentBlock: bigint,
-  e7l: E7L
+  e7l: E7L,
 ) {
   for (
     let block = lastBlockIndexed;
@@ -24,7 +24,7 @@ export async function indexE7L(
       data: {
         lastBlockIndexed: bigIntMin(
           block + BLOCKS_PER_QUERY - BigInt(1),
-          currentBlock
+          currentBlock,
         ),
       },
     });
@@ -49,7 +49,7 @@ async function indexLinks(e7l: E7L, block: bigint, currentBlock: bigint) {
     console.log(
       `[${e7l.name.padStart(10)}] E7L ${e7lTokenId
         .toString()
-        .padStart(4)} linked to MrCrypto ${e7lTokenId.toString().padStart(4)}`
+        .padStart(4)} linked to MrCrypto ${e7lTokenId.toString().padStart(4)}`,
     );
 
     await prisma.e7LToken.update({

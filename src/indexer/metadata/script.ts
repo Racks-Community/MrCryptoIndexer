@@ -48,5 +48,5 @@ const out = path.resolve(__dirname, "./metadata.ts");
 fs.writeFileSync(
   out,
   `export const metadata : Record<number, { image: string; toal_score: number; atributes: { Background: string; Clothes: string; Eyes: string; Headwear: string; Moustache: string; Type: string; }; }> 
-  = ${JSON.stringify(res, null, 2)}`
+  = ${JSON.stringify(res, null, 2)}`,
 );
