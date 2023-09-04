@@ -26,3 +26,7 @@ pnpm db:seed
 pnpm build
 pnpm start
 ```
+
+## Folder structure
+
+TODO
