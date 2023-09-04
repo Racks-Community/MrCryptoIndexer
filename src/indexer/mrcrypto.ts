@@ -227,7 +227,14 @@ async function updateOrCreateMrCrypto(
     create: {
       tokenId: tokenId,
       imageURL: metadata[tokenId].image,
+      attBackground: metadata[tokenId].attributes.Background,
+      attClothes: metadata[tokenId].attributes.Clothes,
+      attEyes: metadata[tokenId].attributes.Eyes,
+      attHeadwear: metadata[tokenId].attributes.Headwear,
+      attMoustache: metadata[tokenId].attributes.Moustache,
+      attType: metadata[tokenId].attributes.Type,
       metadataURL: `https://apinft.racksmafia.com/api/${tokenId}.json`,
+      totalScore: metadata[tokenId].total_score,
       lastTransferBlock: block,
       Owner: {
         connectOrCreate: {

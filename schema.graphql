@@ -53,9 +53,15 @@ type MrCrypto {
   E7LTokens: [E7LToken!]!
   Owner: Holder!
   Transfers: [Transfer!]!
+  background: String!
+  clothes: String!
+  eyes: String!
+  headwear: String!
   imageURL: String!
   metadata: String!
+  moustache: String!
   tokenId: Int!
+  type: String!
 }
 
 enum OrderByInput {

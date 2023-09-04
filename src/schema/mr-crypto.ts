@@ -12,6 +12,12 @@ builder.prismaObject("MrCrypto", {
     Transfers: t.relation("Transfers", {
       query: { orderBy: { blockNumber: "desc" } },
     }),
+    background: t.exposeString("attBackground"),
+    clothes: t.exposeString("attClothes"),
+    eyes: t.exposeString("attEyes"),
+    headwear: t.exposeString("attHeadwear"),
+    moustache: t.exposeString("attMoustache"),
+    type: t.exposeString("attType"),
   }),
 });
 

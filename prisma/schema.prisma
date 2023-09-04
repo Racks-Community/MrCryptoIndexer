@@ -31,6 +31,13 @@ model MrCrypto {
   imageURL          String
   metadataURL       String
   lastTransferBlock BigInt
+  attBackground     String
+  attClothes        String
+  attType           String
+  attHeadwear       String
+  attEyes           String
+  attMoustache      String
+  totalScore        Float
   Transfers         Transfer[]
   E7LTokensLinked   E7LToken[]
 

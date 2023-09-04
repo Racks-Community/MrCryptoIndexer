@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "node dist/server",
+    "start": "pnpm build && node dist/server",
     "clean": "git clean -xdf dist",
     "clean:node": "git clean -xdf node_modules",
     "lint": "tsc --noEmit --pretty",
