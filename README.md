@@ -29,4 +29,8 @@ pnpm start
 
 ## Folder structure
 
+```
+prisma
+|-- shema.primsma
+```
 TODO
