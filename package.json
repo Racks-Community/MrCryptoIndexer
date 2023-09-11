@@ -6,7 +6,7 @@
   "engines": {
     "node": ">=v18.17.1"
   },
-  "packageManager": "pnpm@8.7.4",
+  "packageManager": "pnpm@8.7.5",
   "scripts": {
     "start": "pnpm build && node dist/server",
     "clean": "git clean -xdf dist",
