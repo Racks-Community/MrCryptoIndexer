@@ -33,8 +33,8 @@ dependencies:
     specifier: 5.2.2
     version: 5.2.2
   viem:
-    specifier: ^1.10.13
-    version: 1.10.13(typescript@5.2.2)
+    specifier: ^1.10.14
+    version: 1.10.14(typescript@5.2.2)
 
 devDependencies:
   '@types/node':
@@ -1551,8 +1551,8 @@ packages:
     engines: {node: '>=12'}
     dev: false
 
-  /viem@1.10.13(typescript@5.2.2):
-    resolution: {integrity: sha512-gu2V7ObWTfbiZBwHERPbTgYgWXnraNOSAP2a//rdjZV55seie/5oMAlIa1OHUn7iGZNlDFTbqzOq4MY3RHWWYA==}
+  /viem@1.10.14(typescript@5.2.2):
+    resolution: {integrity: sha512-GRwFXLFr+/7+7nYYkABgHom3zMIE3DdxZ/DP78QlYWUanpjUV5IebxMOm6pfKD+ZAj3vf9YPAmz+WogjiUgDWw==}
     peerDependencies:
       typescript: '>=5.0.4'
     peerDependenciesMeta:
