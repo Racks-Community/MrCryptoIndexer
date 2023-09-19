@@ -9,14 +9,14 @@ dependencies:
     specifier: ^10.0.0
     version: 10.0.0(graphql@16.8.1)
   '@pothos/core':
-    specifier: ^3.35.0
-    version: 3.35.0(graphql@16.8.1)
+    specifier: ^3.36.0
+    version: 3.36.0(graphql@16.8.1)
   '@pothos/plugin-prisma':
     specifier: ^3.59.3
-    version: 3.59.3(@pothos/core@3.35.0)(@prisma/client@5.3.1)(graphql@16.8.1)(typescript@5.2.2)
+    version: 3.59.3(@pothos/core@3.36.0)(@prisma/client@5.3.1)(graphql@16.8.1)(typescript@5.2.2)
   '@pothos/plugin-relay':
     specifier: ^3.43.1
-    version: 3.43.1(@pothos/core@3.35.0)(graphql@16.8.1)
+    version: 3.43.1(@pothos/core@3.36.0)(graphql@16.8.1)
   '@prisma/client':
     specifier: ^5.3.1
     version: 5.3.1(prisma@5.3.1)
@@ -436,15 +436,15 @@ packages:
       fastq: 1.15.0
     dev: true
 
-  /@pothos/core@3.35.0(graphql@16.8.1):
-    resolution: {integrity: sha512-mSMmLkWsC76zHN93cTuwsA7fqLytcr9uNNjtiAEIDxAj46dgTb4bmfExgZIke1GQc8UKJ4GO2g0OM9TGuB3H/A==}
+  /@pothos/core@3.36.0(graphql@16.8.1):
+    resolution: {integrity: sha512-c3NEo9onuf1nmElY96z6pYgiVrdoc8l27VtaWMAhJTUUlSS45vgDNcelmU8v9ujaYgKTq54eqXDeP7sQ2LfoBQ==}
     peerDependencies:
       graphql: '>=15.1.0'
     dependencies:
       graphql: 16.8.1
     dev: false
 
-  /@pothos/plugin-prisma@3.59.3(@pothos/core@3.35.0)(@prisma/client@5.3.1)(graphql@16.8.1)(typescript@5.2.2):
+  /@pothos/plugin-prisma@3.59.3(@pothos/core@3.36.0)(@prisma/client@5.3.1)(graphql@16.8.1)(typescript@5.2.2):
     resolution: {integrity: sha512-0NW+cJofXyNRdqie0vBQz6eJpnuT8yicfN3cr536I7DVxQyISo45eyXNzhLZdQA1ENbst4zbnIPk99/GeLT7bA==}
     hasBin: true
     peerDependencies:
@@ -453,7 +453,7 @@ packages:
       graphql: '>=15.1.0'
       typescript: '>=4.7.2'
     dependencies:
-      '@pothos/core': 3.35.0(graphql@16.8.1)
+      '@pothos/core': 3.36.0(graphql@16.8.1)
       '@prisma/client': 5.3.1(prisma@5.3.1)
       '@prisma/generator-helper': 5.2.0
       graphql: 16.8.1
@@ -462,13 +462,13 @@ packages:
       - supports-color
     dev: false
 
-  /@pothos/plugin-relay@3.43.1(@pothos/core@3.35.0)(graphql@16.8.1):
+  /@pothos/plugin-relay@3.43.1(@pothos/core@3.36.0)(graphql@16.8.1):
     resolution: {integrity: sha512-T5oFVpTIQW69v2FhXhaxmX3BkqJqONy/wnvtBY110JhpbE8Qa04lDglufr56q0Kkv8CGXxl4387ZeX7NgGrZ7A==}
     peerDependencies:
       '@pothos/core': '*'
       graphql: '>=15.1.0'
     dependencies:
-      '@pothos/core': 3.35.0(graphql@16.8.1)
+      '@pothos/core': 3.36.0(graphql@16.8.1)
       graphql: 16.8.1
     dev: false
 
