@@ -45,7 +45,7 @@
     "@pothos/plugin-prisma": "^3.59.3",
     "@pothos/plugin-relay": "^3.43.1",
     "@prisma/client": "^5.3.1",
-    "graphql": "^16.8.0",
+    "graphql": "^16.8.1",
     "graphql-scalars": "^1.22.2",
     "graphql-yoga": "4.0.4",
     "typescript": "5.2.2",
