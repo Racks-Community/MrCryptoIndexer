@@ -12,8 +12,8 @@ dependencies:
     specifier: ^3.36.0
     version: 3.36.0(graphql@16.8.1)
   '@pothos/plugin-prisma':
-    specifier: ^3.59.3
-    version: 3.59.3(@pothos/core@3.36.0)(@prisma/client@5.3.1)(graphql@16.8.1)(typescript@5.2.2)
+    specifier: ^3.60.0
+    version: 3.60.0(@pothos/core@3.36.0)(@prisma/client@5.3.1)(graphql@16.8.1)(typescript@5.2.2)
   '@pothos/plugin-relay':
     specifier: ^3.44.0
     version: 3.44.0(@pothos/core@3.36.0)(graphql@16.8.1)
@@ -444,8 +444,8 @@ packages:
       graphql: 16.8.1
     dev: false
 
-  /@pothos/plugin-prisma@3.59.3(@pothos/core@3.36.0)(@prisma/client@5.3.1)(graphql@16.8.1)(typescript@5.2.2):
-    resolution: {integrity: sha512-0NW+cJofXyNRdqie0vBQz6eJpnuT8yicfN3cr536I7DVxQyISo45eyXNzhLZdQA1ENbst4zbnIPk99/GeLT7bA==}
+  /@pothos/plugin-prisma@3.60.0(@pothos/core@3.36.0)(@prisma/client@5.3.1)(graphql@16.8.1)(typescript@5.2.2):
+    resolution: {integrity: sha512-IVy5NJjJzVZM4KQiEB/4Q75+CMi8tEkbJ4v2MKKTgYBKgR9GJatjtOtoCbzag4GPK1Ko13VwpPH07Q9LFePtKw==}
     hasBin: true
     peerDependencies:
       '@pothos/core': '*'
