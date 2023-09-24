@@ -29,7 +29,7 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "@types/node": "20.6.4",
+    "@types/node": "20.6.5",
     "@types/ws": "^8.5.5",
     "cross-env": "7.0.3",
     "prettier": "^3.0.3",
