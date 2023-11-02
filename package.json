@@ -11,7 +11,7 @@
     "start": "pnpm build && node dist/server",
     "clean": "git clean -xdf dist",
     "clean:node": "git clean -xdf node_modules",
-    "metada:generate": "pnpm ts-node src/indexer/metadata/script.ts",
+    "metadata:codegen": "pnpm ts-node src/indexer/metadata/script.ts",
     "lint": "tsc --noEmit --pretty",
     "format": "prettier --check .",
     "format:fix": "prettier --write .",

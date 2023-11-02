@@ -1,3 +1,7 @@
+// ======================================================================
+// NOTE: run this script to generate the index.ts file
+// to run this script, run `pnpm metadata:codegen` in the root directory
+// ======================================================================
 import data from "./_metadata_save.json";
 import ranking from "./_ranking.json";
 
