@@ -1,7 +1,7 @@
 import { PublicClient, createPublicClient, http } from "viem";
 import { polygon } from "viem/chains";
 
-export const BLOCKS_PER_QUERY = BigInt(100_000);
+export const BLOCKS_PER_QUERY = 100_000n as const;
 
 const ALCHEMY_URL = process.env.RPC_URL ?? "";
 const transport = http(ALCHEMY_URL);

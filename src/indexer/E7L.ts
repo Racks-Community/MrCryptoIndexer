@@ -23,7 +23,7 @@ export async function indexE7L(
       },
       data: {
         lastBlockIndexed: bigIntMin(
-          block + BLOCKS_PER_QUERY - BigInt(1),
+          block + BLOCKS_PER_QUERY - 1n,
           currentBlock,
         ),
       },
@@ -36,7 +36,7 @@ async function indexLinks(e7l: E7L, block: bigint, currentBlock: bigint) {
     address: e7l.contractAddress as `0x${string}`,
     eventName: "Link",
     fromBlock: block,
-    toBlock: bigIntMin(block + BLOCKS_PER_QUERY - BigInt(1), currentBlock),
+    toBlock: bigIntMin(block + BLOCKS_PER_QUERY - 1n, currentBlock),
   });
 
   const logs = await client.getFilterLogs({ filter });
@@ -44,7 +44,7 @@ async function indexLinks(e7l: E7L, block: bigint, currentBlock: bigint) {
   for (let log of logs) {
     const e7lTokenId = Number(log.args.tokenId);
     const mrcryptoTokenId = Number(log.args.parentTokenId);
-    const block = log.blockNumber ?? BigInt(0);
+    const block = log.blockNumber ?? 0n;
 
     console.log(
       `[${e7l.name.padStart(10)}] E7L ${e7lTokenId
@@ -73,7 +73,7 @@ async function indexTransfers(e7l: E7L, block: bigint, currentBlock: bigint) {
     address: e7l.contractAddress as `0x${string}`,
     eventName: "Transfer",
     fromBlock: block,
-    toBlock: bigIntMin(block + BLOCKS_PER_QUERY - BigInt(1), currentBlock),
+    toBlock: bigIntMin(block + BLOCKS_PER_QUERY - 1n, currentBlock),
   });
 
   const logs = await client.getFilterLogs({ filter });
@@ -81,7 +81,7 @@ async function indexTransfers(e7l: E7L, block: bigint, currentBlock: bigint) {
   for (let log of logs) {
     const to = log.args.to;
     const e7lTokenId = Number(log.args.tokenId);
-    const block = log.blockNumber ?? BigInt(0);
+    const block = log.blockNumber ?? 0n;
 
     if (!to) {
       throw new Error("E7L indexing: Error indexing transfer");
