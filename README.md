@@ -31,7 +31,7 @@ pnpm start
 
 ```
 ├── schema.graphql      # Auto-generated schema
-├── prisma 
+├── prisma
 │   ├── schema.prisma   # Prisma schema
 │   └── seed.ts         # Script to populate database
 └── src
@@ -58,7 +58,7 @@ pnpm start
     │   ├── index.ts
     │   ├── mr-crypto.ts
     │   └── transactions.ts
-    └── server.ts        # Server entry point  
+    └── server.ts        # Server entry point
 ```
 
 TODO
