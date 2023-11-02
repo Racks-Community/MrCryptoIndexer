@@ -1,17 +1,16 @@
 import { prisma } from "@/db";
 import { BLOCKS_PER_QUERY, bigIntMax, bigIntMin, client } from "./common";
 import { abiMrcrypto } from "./abis/abi-mrcrypto";
-import { formatEther, formatUnits, zeroAddress } from "viem";
+import { formatEther, formatUnits } from "viem";
 import { abiWETH } from "./abis/abi-weth";
 import { metadata } from "./metadata";
 import { Payment } from "@prisma/client";
-import { constants } from "buffer";
 
-const MRCRYPTO_DEPLOY_BLOCK: bigint = BigInt(25839542 - 1);
-const MRCRYPTO_ADDRESS = "0xeF453154766505FEB9dBF0a58E6990fd6eB66969";
+const MRCRYPTO_DEPLOY_BLOCK: bigint = 25839541n as const;
+const MRCRYPTO_ADDRESS = "0xeF453154766505FEB9dBF0a58E6990fd6eB66969" as const;
 
-const USDC_ADDRESS = "0x2791Bca1f2de4661ED88A30C99A7a9449Aa84174";
-const WETH_ADDRESS = "0x7ceB23fD6bC0adD59E62ac25578270cFf1b9f619";
+const USDC_ADDRESS = "0x2791Bca1f2de4661ED88A30C99A7a9449Aa84174" as const;
+const WETH_ADDRESS = "0x7ceB23fD6bC0adD59E62ac25578270cFf1b9f619" as const;
 
 export async function indexMrCrypto(currentBlock: bigint) {
   const raw = await prisma.mrCrypto.aggregate({
