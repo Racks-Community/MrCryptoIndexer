@@ -15,10 +15,62 @@ enum Background {
   Yellow
 }
 
+enum Background {
+  Blue
+  Brown
+  DarkBlue
+  DarkGray
+  Fuchsia
+  Gray
+  Lime
+  Mint
+  MoneyGreen
+  Orange
+  Pink
+  Purple
+  VividYellow
+  Yellow
+}
+
 """
 The `BigInt` scalar type represents non-fractional signed whole numeric values.
 """
 scalar BigInt
+
+enum Clothes {
+  ATM
+  Army
+  BTCBowTie
+  BlackBTCBowTie
+  BlueBowTie
+  BlueHoodie
+  CianBowTie
+  ClassicBowTie
+  CreamCardigan
+  DeepBlueBowTie
+  DeepBlueSimple
+  GreenBowTie
+  GreenMoney
+  GreyBTC
+  GreyBowTie
+  MyProShirt
+  OffShoreHoodie
+  OrangeBowTie
+  PinkBowTie
+  PinkCardigan
+  PinkNYellowBowTie
+  Pumpkin
+  RacksShirt
+  RedBTC
+  RukaShirt
+  SpacesuitBlack
+  SpacesuitWhite
+  SpainBTCBowTie
+  Spruce
+  SteelBlue
+  VivaRacksMafia
+  WhiteBowTie
+}
 
 enum Clothes {
   ATM
@@ -158,10 +210,90 @@ enum Headwear {
   XmasBeanie
 }
 
+enum Eye {
+  Anime
+  BTC
+  Bad
+  BadBlue
+  BadYellow
+  Classic
+  Dead
+  Hollow
+  HollowBTC
+  HollowLaser
+  Kawaii
+  Laser
+  Party
+  Small
+  WallStreet
+}
+
+enum Headwear {
+  BTCBlackCap
+  BTCHat
+  BTCRedCap
+  BTCWhiteCap
+  Bald
+  BitBaseHat
+  BlondeHair
+  BlondeStyledHair
+  BlueHat
+  CianHat
+  ClassicHat
+  DeepBlueHat
+  DemonHorns
+  Dreadlocks
+  GradientHaircut
+  GreenHat
+  HelicopterHat
+  Hoodie
+  JesusCrypt
+  LineHaircut
+  LongBlondeHair
+  LongDarkHair
+  McHodlerBlackCap
+  McHodlerRedCap
+  MintHat
+  MyProCap
+  OrangeBeanie
+  OrangeHat
+  PinkHat
+  PinkNYellowHat
+  PurbleBeanie
+  RedBeanie
+  RedHat
+  SpainHat
+  SpruceHat
+  StyledBrownHair
+  TrumpHair
+  VividGreenHat
+  WhiteHair
+  WhiteHat
+  WillyBeret
+  XmasBeanie
+}
+
 type Holder {
   address: String!
   mrCryptosOwned: [MrCrypto!]!
   numberOfMrCryptos: Int!
+}
+
+enum Moustache {
+  BeardTonge
+  Black
+  BlackMoustache
+  Cigar
+  CigarSimple
+  Classic
+  Depilated
+  MintTonge
+  SimpleCigar
+  SkullMouth
+  Smile
+  SmileCigar
+  Tonge
+  WhiteMoustache
 }
 
 enum Moustache {
@@ -194,8 +326,19 @@ type MrCrypto {
   moustache: String!
   ranking: Int!
   score: Float!
+  ranking: Int!
+  score: Float!
   tokenId: Int!
   type: String!
+}
+
+input MrCryptoFilter {
+  background: Background
+  clothes: Clothes
+  eye: Eye
+  headwear: Headwear
+  moustache: Moustache
+  type: Type
 }
 
 input MrCryptoFilter {
@@ -220,6 +363,7 @@ type Payment {
 
 type Query {
   collectionInfo: CollectionInfo!
+  e7lCollections: [E7L!]!
   e7lCollections: [E7L!]!
   e7lTokens(first: Int! = 100, skip: Int! = 0): [E7LToken!]!
   e7lTokensByAddress(address: String!): [E7LToken!]!
@@ -256,6 +400,18 @@ type Transfer {
   from: String!
   to: String!
   txHash: String!
+}
+
+enum Type {
+  Alien
+  Cat
+  Human
+  Martian
+  Monkey
+  MrSkull
+  Nsujpg
+  Panda
+  Zombie
 }
 
 enum Type {
