@@ -1,3 +1,7 @@
+// ==============================================================
+// NOTE: run this script to generate the index.ts file, to run
+// this script, run `pnpm metadata:codegen` in the root directory
+// ==============================================================
 import data from "./_metadata_save.json";
 import ranking from "./_ranking.json";
 
@@ -12,8 +16,9 @@ const res: Record<
   number,
   {
     image: string;
-    toal_score: number;
-    atributes: {
+    total_score: number;
+    ranking: number;
+    attributes: {
       Background: string;
       Clothes: string;
       Eyes: string;
@@ -27,8 +32,9 @@ const res: Record<
 metadata.forEach((element) => {
   res[element.edition] = {
     image: element.image,
-    toal_score: 0,
-    atributes: {
+    total_score: 0,
+    ranking: 0,
+    attributes: {
       Background: element.attributes[0].value,
       Clothes: element.attributes[1].value,
       Type: element.attributes[2].value,
@@ -39,14 +45,15 @@ metadata.forEach((element) => {
   };
 });
 
-rankingData.forEach((element) => {
-  res[element.index].toal_score = Number(element.total_score.toFixed(2));
+rankingData.forEach((element, ranking) => {
+  res[element.index].total_score = Number(element.total_score.toFixed(2));
+  res[element.index].ranking = ranking + 1;
 });
 
-const out = path.resolve(__dirname, "./metadata.ts");
+const out = path.resolve(__dirname, "./index.ts");
 
 fs.writeFileSync(
   out,
-  `export const metadata : Record<number, { image: string; toal_score: number; atributes: { Background: string; Clothes: string; Eyes: string; Headwear: string; Moustache: string; Type: string; }; }> 
+  `export const metadata : Record<number, { image: string; ranking: number; total_score: number; attributes: { Background: string; Clothes: string; Eyes: string; Headwear: string; Moustache: string; Type: string; }; }> 
   = ${JSON.stringify(res, null, 2)}`,
 );

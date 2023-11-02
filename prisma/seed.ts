@@ -2,7 +2,7 @@ import { PrismaClient, Prisma } from "@prisma/client";
 
 const prisma = new PrismaClient();
 
-const userData: Prisma.E7LCreateInput[] = [
+const e7lList: Prisma.E7LCreateInput[] = [
   {
     name: "Offshore",
     deployedBlock: 37786943,
@@ -39,11 +39,11 @@ const userData: Prisma.E7LCreateInput[] = [
 
 async function main() {
   console.log(`Start seeding ...`);
-  for (const u of userData) {
+  for (const e7l of e7lList) {
     const user = await prisma.e7L.create({
-      data: u,
+      data: e7l,
     });
-    console.log(`Created user with id: ${user.id}`);
+    console.log(`Created E7L with id: ${user.id}`);
   }
   console.log(`Seeding finished.`);
 }

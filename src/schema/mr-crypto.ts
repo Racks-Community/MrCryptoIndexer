@@ -1,6 +1,15 @@
+import { getAddress } from "viem";
+
 import { builder } from "@/builder";
 import { prisma } from "@/db";
-import { getAddress } from "viem";
+import {
+  BackgroundAttribute,
+  ClothesAttribute,
+  EyesAttribute,
+  HeadwearAttribute,
+  MoustacheAttribute,
+  TypeAttribute,
+} from "@/indexer/metadata/medatada-type";
 
 builder.prismaObject("MrCrypto", {
   fields: (t) => ({
@@ -17,154 +26,9 @@ builder.prismaObject("MrCrypto", {
     eyes: t.exposeString("attEyes"),
     headwear: t.exposeString("attHeadwear"),
     moustache: t.exposeString("attMoustache"),
+    score: t.exposeFloat("totalScore"),
+    ranking: t.exposeInt("ranking"),
     type: t.exposeString("attType"),
-  }),
-});
-
-builder.prismaObject("Transfer", {
-  fields: (t) => ({
-    from: t.exposeString("from"),
-    to: t.exposeString("to"),
-    MrCrypto: t.relation("Token"),
-    txHash: t.exposeString("hash"),
-    blockNumber: t.expose("blockNumber", { type: "BigInt" }),
-    Payment: t.relation("Payment", { nullable: true }),
-  }),
-});
-
-builder.prismaObject("Payment", {
-  fields: (t) => ({
-    blockNumber: t.expose("blockNumber", { type: "BigInt" }),
-    Currencies: t.relation("Currency"),
-    Transfer: t.relation("Transfer"),
-  }),
-});
-
-builder.prismaObject("Currency", {
-  fields: (t) => ({
-    amount: t.exposeFloat("amount"),
-    name: t.exposeString("name"),
-  }),
-});
-
-builder.prismaObject("Holder", {
-  fields: (t) => ({
-    address: t.exposeString("address"),
-    mrCryptosOwned: t.relation("MrCryptosOwned", {
-      query: { orderBy: { tokenId: "asc" } },
-    }),
-    numberOfMrCryptos: t.field({
-      select: {
-        MrCryptosOwned: {
-          orderBy: {
-            tokenId: "desc",
-          },
-        },
-      },
-      type: "Int",
-      resolve: (parent) => parent.MrCryptosOwned.length,
-    }),
-  }),
-});
-
-builder.prismaObject("E7LToken", {
-  fields: (t) => ({
-    mrCrypto: t.relation("MrCrypto", { nullable: true }),
-    Owner: t.relation("Owner"),
-    E7L: t.relation("E7L"),
-    tokenId: t.exposeInt("e7lTokenId"),
-    imageURL: t.exposeString("imageURL"),
-    metadata: t.exposeString("metadataURL"),
-    linked: t.field({
-      type: "Boolean",
-      resolve: async (e7l) => e7l.mrcryptoTokenId !== null,
-    }),
-    synced: t.field({
-      type: "Boolean",
-      resolve: async (e7l) => {
-        const rawE7L = await prisma.e7LToken.findUniqueOrThrow({
-          where: {
-            id: e7l.id,
-          },
-          select: {
-            MrCrypto: {
-              select: {
-                Owner: {
-                  select: {
-                    address: true,
-                  },
-                },
-              },
-            },
-            Owner: {
-              select: {
-                address: true,
-              },
-            },
-          },
-        });
-
-        const mrCryptoOwner = rawE7L.MrCrypto?.Owner.address;
-        const e7lOwner = rawE7L.Owner.address;
-
-        return mrCryptoOwner === e7lOwner && mrCryptoOwner !== null;
-      },
-    }),
-  }),
-});
-
-builder.prismaObject("E7L", {
-  fields: (t) => ({
-    E7LTokens: t.relation("Tokens"),
-    imageURL: t.exposeString("imageURL"),
-    name: t.exposeString("name"),
-    contractAddress: t.exposeString("contractAddress"),
-    supply: t.field({
-      type: "Int",
-      resolve: (e7l) => {
-        return prisma.e7LToken.count({
-          where: {
-            e7lId: e7l.id,
-          },
-        });
-      },
-    }),
-    linked: t.field({
-      type: "Int",
-      resolve: (e7l) => {
-        return prisma.e7LToken.count({
-          where: {
-            e7lId: e7l.id,
-            mrcryptoTokenId: {
-              not: null,
-            },
-          },
-        });
-      },
-    }),
-    synchronized: t.field({
-      type: "Int",
-      resolve: async (e7l) => {
-        const res = await prisma.e7LToken.findMany({
-          where: {
-            e7lId: e7l.id,
-            MrCrypto: {
-              isNot: null,
-            },
-          },
-          select: {
-            ownerId: true,
-            MrCrypto: {
-              select: {
-                ownerId: true,
-              },
-            },
-          },
-        });
-
-        return res.filter((e7l) => e7l.ownerId == e7l.MrCrypto?.ownerId).length;
-      },
-    }),
   }),
 });
 
@@ -197,124 +61,18 @@ builder.queryFields((t) => ({
       });
     },
   }),
-  topHolders: t.prismaField({
-    type: ["Holder"],
-    args: { take: t.arg.int({ required: true, defaultValue: 10 }) },
-    resolve: (query, _parent, args) => {
-      return prisma.holder.findMany({
-        ...query,
-        take: args.take,
-        orderBy: {
-          MrCryptosOwned: { _count: "desc" },
-        },
-      });
-    },
-  }),
 }));
 
-const OrderTypeInput = builder.enumType("OrderByInput", {
-  values: { asc: {}, desc: {} },
+const HeadwearEnum = builder.enumType(HeadwearAttribute, { name: "Headwear" });
+const TypeEnum = builder.enumType(TypeAttribute, { name: "Type" });
+const EyesEnum = builder.enumType(EyesAttribute, { name: "Eye" });
+const ClothesEnum = builder.enumType(ClothesAttribute, { name: "Clothes" });
+const BackgroundEnum = builder.enumType(BackgroundAttribute, {
+  name: "Background",
 });
-
-const SalesOrderByEnum = builder.enumType("SalesOrderByEnum", {
-  values: { blockNumber: {}, amount: {} },
+const MoustacheEnum = builder.enumType(MoustacheAttribute, {
+  name: "Moustache",
 });
-
-builder.queryFields((t) => ({
-  transfers: t.prismaField({
-    type: ["Transfer"],
-    args: {
-      first: t.arg.int({ required: true, defaultValue: 100 }),
-      skip: t.arg.int({ required: true, defaultValue: 0 }),
-      order: t.arg({
-        type: OrderTypeInput,
-        required: true,
-        defaultValue: "desc",
-      }),
-    },
-    resolve: (query, _parent, args) =>
-      prisma.transfer.findMany({
-        ...query,
-        skip: args.skip,
-        take: args.first,
-        orderBy: [
-          {
-            blockNumber: args.order,
-          },
-          {
-            tokenId: args.order,
-          },
-        ],
-      }),
-  }),
-  sales: t.prismaField({
-    type: ["Payment"],
-    args: {
-      first: t.arg.int({ required: true, defaultValue: 100 }),
-      skip: t.arg.int({ required: true, defaultValue: 0 }),
-      order: t.arg({
-        type: OrderTypeInput,
-        required: true,
-        defaultValue: "desc",
-      }),
-      orderBy: t.arg({
-        type: SalesOrderByEnum,
-        required: true,
-        defaultValue: "blockNumber",
-      }),
-    },
-    resolve: (query, _parent, args) =>
-      prisma.payment.findMany({
-        ...query,
-        skip: args.skip,
-        take: args.first,
-        // TODO: Make this work
-        orderBy: {
-          blockNumber: args.order,
-        },
-      }),
-  }),
-}));
-
-builder.queryFields((t) => ({
-  e7lTokensByAddress: t.prismaField({
-    type: ["E7LToken"],
-    args: { address: t.arg.string({ required: true }) },
-    resolve: (query, _parent, args) => {
-      const address = getAddress(args.address);
-
-      return prisma.e7LToken.findMany({
-        ...query,
-        where: {
-          Owner: {
-            address,
-          },
-        },
-      });
-    },
-  }),
-  e7lTokens: t.prismaField({
-    type: ["E7LToken"],
-    args: {
-      first: t.arg.int({ required: true, defaultValue: 100 }),
-      skip: t.arg.int({ required: true, defaultValue: 0 }),
-    },
-    resolve: (query, _parent, args) => {
-      return prisma.e7LToken.findMany({
-        ...query,
-        skip: args.skip,
-        take: args.first,
-        orderBy: [{ E7L: { name: "asc" } }, { e7lTokenId: "asc" }],
-      });
-    },
-  }),
-  E7L: t.prismaField({
-    type: ["E7L"],
-    resolve: (query) => {
-      return prisma.e7L.findMany(query);
-    },
-  }),
-}));
 
 builder.queryFields((t) => ({
   mrCryptoTokens: t.prismaField({
@@ -322,10 +80,37 @@ builder.queryFields((t) => ({
     args: {
       first: t.arg.int({ required: true, defaultValue: 100 }),
       skip: t.arg.int({ required: true, defaultValue: 0 }),
+      filter: t.arg({
+        type: builder.inputType("MrCryptoFilter", {
+          fields: (t) => ({
+            headwear: t.field({ type: HeadwearEnum, required: false }),
+            type: t.field({ type: TypeEnum, required: false }),
+            background: t.field({ type: BackgroundEnum, required: false }),
+            eye: t.field({ type: EyesEnum, required: false }),
+            moustache: t.field({ type: MoustacheEnum, required: false }),
+            clothes: t.field({ type: ClothesEnum, required: false }),
+          }),
+        }),
+        required: false,
+      }),
     },
     resolve: (query, _parent, args) => {
       return prisma.mrCrypto.findMany({
         ...query,
+        ...(args.filter && {
+          where: {
+            ...(args.filter.headwear && { attHeadwear: args.filter.headwear }),
+            ...(args.filter.type && { attType: args.filter.type }),
+            ...(args.filter.clothes && { attClothes: args.filter.clothes }),
+            ...(args.filter.eye && { attEyes: args.filter.eye }),
+            ...(args.filter.moustache && {
+              attMoustache: args.filter.moustache,
+            }),
+            ...(args.filter.background && {
+              attBackground: args.filter.background,
+            }),
+          },
+        }),
         skip: args.skip,
         take: args.first,
         orderBy: [{ tokenId: "asc" }],

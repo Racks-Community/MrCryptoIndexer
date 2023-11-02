@@ -38,6 +38,7 @@ model MrCrypto {
   attEyes           String
   attMoustache      String
   totalScore        Float
+  ranking           Int
   Transfers         Transfer[]
   E7LTokensLinked   E7LToken[]
 
