@@ -4,9 +4,9 @@
   "description": "",
   "main": "index.js",
   "engines": {
-    "node": ">=v18.17.1"
+    "node": ">=v20.8.1"
   },
-  "packageManager": "pnpm@8.7.1",
+  "packageManager": "pnpm@8.10.2",
   "scripts": {
     "start": "pnpm build && node dist/server",
     "clean": "git clean -xdf dist",
@@ -29,11 +29,11 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "@types/node": "20.5.9",
-    "@types/ws": "^8.5.5",
+    "@types/node": "20.8.10",
+    "@types/ws": "^8.5.8",
     "cross-env": "7.0.3",
     "prettier": "^3.0.3",
-    "prisma": "^5.2.0",
+    "prisma": "^5.5.2",
     "ts-node": "10.9.1",
     "ts-node-dev": "2.0.0",
     "tsconfig-paths": "^4.2.0",
@@ -41,14 +41,14 @@
   },
   "dependencies": {
     "@graphql-tools/schema": "^10.0.0",
-    "@pothos/core": "^3.33.1",
-    "@pothos/plugin-prisma": "^3.59.0",
-    "@pothos/plugin-relay": "^3.43.1",
-    "@prisma/client": "^5.2.0",
-    "graphql": "^16.8.0",
-    "graphql-scalars": "^1.22.2",
-    "graphql-yoga": "4.0.4",
+    "@pothos/core": "^3.38.0",
+    "@pothos/plugin-prisma": "^3.61.0",
+    "@pothos/plugin-relay": "^3.44.0",
+    "@prisma/client": "^5.5.2",
+    "graphql": "^16.8.1",
+    "graphql-scalars": "^1.22.4",
+    "graphql-yoga": "5.0.0",
     "typescript": "5.2.2",
-    "viem": "^1.10.1"
+    "viem": "^1.18.3"
   }
 }
