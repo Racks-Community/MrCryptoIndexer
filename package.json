@@ -15,7 +15,7 @@
     "lint": "tsc --noEmit --pretty",
     "format": "prettier --check .",
     "format:fix": "prettier --write .",
-    "build": "npm -s run clean && npm -s run db:generate && tsup && npm run build:schema",
+    "build": "npm -s run db:generate && tsup && npm run build:schema",
     "build:schema": "ts-node -r tsconfig-paths/register src/schema/index.ts",
     "db:generate": "prisma generate",
     "db:push": "prisma db push",
