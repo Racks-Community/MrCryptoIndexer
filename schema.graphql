@@ -207,6 +207,10 @@ input MrCryptoFilter {
   type: Type
 }
 
+type Mutation {
+  startIndexationManually: String!
+}
+
 enum OrderByInput {
   asc
   desc
@@ -224,6 +228,7 @@ type Query {
   e7lTokens(first: Int! = 100, skip: Int! = 0): [E7LToken!]!
   e7lTokensByAddress(address: String!): [E7LToken!]!
   isAuthenticated: Boolean!
+  isIndexerCronJobRunning: Boolean!
   mrCryptoById(tokenId: Int!): MrCrypto!
   mrCryptoTokens(filter: MrCryptoFilter, first: Int! = 100, skip: Int! = 0): [MrCrypto!]!
   mrCryptosByAddress(address: String!): [MrCrypto!]!

@@ -1,7 +1,7 @@
 import { createYoga } from "graphql-yoga";
 import { createServer } from "http";
 import { schema } from "./schema";
-import { indexerProcess } from "@/indexer";
+import { startIndexation } from "@/indexer";
 
 const yoga = createYoga({
   graphqlEndpoint: "/",
@@ -25,22 +25,4 @@ server.listen(4000, () => {
   `);
 });
 
-async function indexer() {
-  console.log("Indexer stared ⚒️");
-
-  await indexerProcess().catch((e) => {
-    console.error("Indexer failed ❌ 😭");
-
-    const { message, stack } = e;
-    console.error(message);
-    console.error(stack);
-
-    process.exit(1);
-  });
-
-  console.log("Indexer finished ✅ 🎉 😄");
-
-  setTimeout(indexer, 1000 * 60 * 5); // 5 minutes
-}
-
-indexer();
+startIndexation();
