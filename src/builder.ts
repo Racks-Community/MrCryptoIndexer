@@ -7,7 +7,9 @@ import { prisma } from "@/db";
 
 export const builder = new SchemaBuilder<{
   PrismaTypes: PrismaTypes;
-  Context: {};
+  Context: {
+    isAuthenticated: boolean;
+  };
   Scalars: {
     DateTime: {
       Input: Date;
@@ -67,6 +69,10 @@ CollectionInfo.implement({
 
 builder.queryType({
   fields: (t) => ({
+    isAuthenticated: t.field({
+      type: "Boolean",
+      resolve: (_root, _args, context) => context.isAuthenticated,
+    }),
     collectionInfo: t.field({
       type: CollectionInfo,
       resolve: async () => {

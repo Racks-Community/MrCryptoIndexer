@@ -1,0 +1,27 @@
+version: "3"
+services:
+  app:
+    build: .
+    ports:
+      - "4000:4000"
+      - "5556:5555"
+    depends_on:
+      - db
+    environment:
+      - DATABASE_URL=postgres://${POSTGRES_USER}:${POSTGRES_PASSWORD}@db:5432/${POSTGRES_DB}
+      - ADMIN_API_KEY=${ADMIN_API_KEY}
+  db:
+    image: postgres:13
+    environment:
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - POSTGRES_DB=${POSTGRES_DB}
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    ports:
+      - "5433:5432"
+
+volumes:
+  postgres-data:
+    name: postgres-data-mrcrypto-indexer
+    driver: local

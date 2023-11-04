@@ -39,6 +39,13 @@ const e7lList: Prisma.E7LCreateInput[] = [
 
 async function main() {
   console.log(`Start seeding ...`);
+  const e7ls = await prisma.e7L.findMany();
+
+  if (e7ls.length > 0) {
+    console.log(`Already seeded.`);
+    return;
+  }
+
   for (const e7l of e7lList) {
     const user = await prisma.e7L.create({
       data: e7l,

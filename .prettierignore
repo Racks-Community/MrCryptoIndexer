@@ -1,2 +1,4 @@
 
 _*.json
+*.graphql
+pnpm-lock.yaml

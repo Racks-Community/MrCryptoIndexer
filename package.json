@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "engines": {
-    "node": "v20.8.1"
+    "node": "v20.9.0"
   },
   "packageManager": "pnpm@8.10.2",
   "scripts": {
@@ -15,7 +15,7 @@
     "lint": "tsc --noEmit --pretty",
     "format": "prettier --check .",
     "format:fix": "prettier --write .",
-    "build": "npm -s run clean && npm -s run db:generate && tsup && npm run build:schema",
+    "build": "npm -s run db:generate && tsup && npm run build:schema",
     "build:schema": "ts-node -r tsconfig-paths/register src/schema/index.ts",
     "db:generate": "prisma generate",
     "db:push": "prisma db push",
@@ -30,6 +30,8 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "@types/bcryptjs": "2.4.5",
+    "@types/jsonwebtoken": "9.0.4",
     "@types/node": "20.8.10",
     "@types/ws": "^8.5.8",
     "cross-env": "7.0.3",
@@ -46,9 +48,11 @@
     "@pothos/plugin-prisma": "^3.61.0",
     "@pothos/plugin-relay": "^3.44.0",
     "@prisma/client": "^5.5.2",
+    "bcryptjs": "2.4.3",
     "graphql": "^16.8.1",
     "graphql-scalars": "^1.22.4",
     "graphql-yoga": "5.0.0",
+    "jsonwebtoken": "9.0.2",
     "typescript": "5.2.2",
     "viem": "^1.18.3"
   }

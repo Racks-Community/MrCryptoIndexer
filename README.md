@@ -1,6 +1,13 @@
 # Mr. Crypto Indexer
 
-## Get started
+## Get started - Local
+
+### Clone repository
+
+```bash
+git clone https://github.com/Racks-Community/MrCryptoIndexer
+cd MrCryptoIndexer
+```
 
 ### Install dependencies
 
@@ -27,6 +34,27 @@ pnpm build
 pnpm start
 ```
 
+## Get started - Docker
+
+### Clone repository
+
+```bash
+git clone https://github.com/Racks-Community/MrCryptoIndexer
+cd MrCryptoIndexer
+```
+
+### Copy `.env` file and complete it
+
+```bash
+cp .env.example .env
+```
+
+### Docker compose up
+
+```bash
+docker-compose up -d
+```
+
 ## Folder structure
 
 ```
@@ -35,7 +63,7 @@ pnpm start
 │   ├── schema.prisma   # Prisma schema
 │   └── seed.ts         # Script to populate database
 └── src
-    ├── builder.ts
+    ├── builder.ts      # GraphQL schema builder with Pothos
     ├── db.ts
     ├── indexer         # Logic for indexing data
     │   ├── abis
@@ -60,5 +88,3 @@ pnpm start
     │   └── transactions.ts
     └── server.ts        # Server entry point
 ```
-
-TODO
