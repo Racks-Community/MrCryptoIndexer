@@ -6,9 +6,12 @@ import { indexerProcess } from "@/indexer";
 const yoga = createYoga({
   graphqlEndpoint: "/",
   schema,
-  context: (req) => {
+  context: ({ request }) => {
     return {
-      req,
+      req: request,
+      isAuthenticated:
+        process.env.ADMIN_API_KEY &&
+        process.env.ADMIN_API_KEY === request.headers.get("x-api-key"),
     };
   },
 });

@@ -17,6 +17,7 @@ COPY --from=prod-deps /app/node_modules /app/node_modules
 COPY --from=build /app/dist /app/dist
 EXPOSE 4000
 
-ENV PATH /app/node_modules/.bin:$PATH
+RUN printf "pnpm db:seed \n pnpm start \n" > /app/start.sh
+RUN chmod +x /app/start.sh
 
-CMD [ "pnpm", "start" ]
+CMD [ "/app/start.sh" ]

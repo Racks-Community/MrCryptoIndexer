@@ -367,6 +367,7 @@ type Query {
   e7lCollections: [E7L!]!
   e7lTokens(first: Int! = 100, skip: Int! = 0): [E7LToken!]!
   e7lTokensByAddress(address: String!): [E7LToken!]!
+  isAuthenticated: Boolean!
   mrCryptoById(tokenId: Int!): MrCrypto!
   mrCryptoTokens(filter: MrCryptoFilter, first: Int! = 100, skip: Int! = 0): [MrCrypto!]!
   mrCryptosByAddress(address: String!): [MrCrypto!]!
