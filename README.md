@@ -1,6 +1,6 @@
 # Mr. Crypto Indexer
 
-## Get started - Local 
+## Get started - Local
 
 ### Clone repository
 
@@ -34,7 +34,7 @@ pnpm build
 pnpm start
 ```
 
-## Get started - Docker 
+## Get started - Docker
 
 ### Clone repository
 
@@ -49,7 +49,7 @@ cd MrCryptoIndexer
 cp .env.example .env
 ```
 
-### Docker compose up 
+### Docker compose up
 
 ```bash
 docker-compose up -d
@@ -88,5 +88,3 @@ docker-compose up -d
     │   └── transactions.ts
     └── server.ts        # Server entry point
 ```
-
-TODO
