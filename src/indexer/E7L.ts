@@ -125,9 +125,11 @@ async function indexTransfers(e7l: E7L, block: bigint, currentBlock: bigint) {
       args: [BigInt(e7lTokenId)],
     });
 
-    const metadata = await fetch(uri).then((res) => res.json());
+    const metadata = (await fetch(uri).then((res) => res.json())) as {
+      image: string;
+    };
 
-    const image = metadata.image as string;
+    const image = metadata.image;
 
     await prisma.e7LToken.create({
       data: {

@@ -47,6 +47,7 @@
     "@pothos/core": "^3.38.0",
     "@pothos/plugin-prisma": "^3.61.0",
     "@pothos/plugin-relay": "^3.44.0",
+    "@pothos/plugin-scope-auth": "^3.20.0",
     "@prisma/client": "^5.5.2",
     "bcryptjs": "2.4.3",
     "graphql": "^16.8.1",
