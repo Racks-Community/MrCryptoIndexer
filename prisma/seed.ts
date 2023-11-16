@@ -51,6 +51,14 @@ const e7lList: Prisma.E7LCreateInput[] = [
     imageURL:
       "https://media.discordapp.net/attachments/994890616163020870/1126094353111199744/NFT_Barbie_Ticket_Final.png",
   },
+  {
+    name: "Mr. Crypto Poker Club",
+    deployedBlock: 45678048,
+    lastBlockIndexed: 45678048,
+    contractAddress: "0xb9EDE6f94D192073D8eaF85f8db677133d483249",
+    imageURL:
+      "https://media.discordapp.net/attachments/1083074062756106270/1099735293134897153/ticket.jpg",
+  },
 ];
 
 async function main() {
