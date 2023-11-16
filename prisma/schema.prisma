@@ -47,9 +47,9 @@ model MrCrypto {
 
 model E7L {
   id               String     @id @default(uuid())
-  name             String
+  name             String     @unique
   deployedBlock    BigInt
-  contractAddress  String
+  contractAddress  String     @unique
   lastBlockIndexed BigInt
   imageURL         String
   Tokens           E7LToken[]

@@ -35,22 +35,50 @@ const e7lList: Prisma.E7LCreateInput[] = [
     imageURL:
       "https://mrcrypto-sources.s3.eu-central-1.amazonaws.com/drumerto/1.PNG",
   },
+  {
+    name: "E7L Sell Drugs",
+    deployedBlock: 47743375,
+    lastBlockIndexed: 47743375,
+    contractAddress: "0x59CdeA1ECe5AC15872b015A49d12993ea0857468",
+    imageURL:
+      "https://mrcrypto-sources.s3.eu-central-1.amazonaws.com/3-0/sell-drugs/sell-drugs.png",
+  },
+  {
+    name: "Mr. Crypto Gentleman's Day",
+    deployedBlock: 44709909,
+    lastBlockIndexed: 44709909,
+    contractAddress: "0x6955861dD2177324D47485A9EcCA71794ADB318f",
+    imageURL:
+      "https://media.discordapp.net/attachments/994890616163020870/1126094353111199744/NFT_Barbie_Ticket_Final.png",
+  },
+  {
+    name: "Mr. Crypto Poker Club",
+    deployedBlock: 45678048,
+    lastBlockIndexed: 45678048,
+    contractAddress: "0xb9EDE6f94D192073D8eaF85f8db677133d483249",
+    imageURL:
+      "https://media.discordapp.net/attachments/1083074062756106270/1099735293134897153/ticket.jpg",
+  },
 ];
 
 async function main() {
   console.log(`Start seeding ...`);
   const e7ls = await prisma.e7L.findMany();
 
-  if (e7ls.length > 0) {
-    console.log(`Already seeded.`);
-    return;
-  }
-
   for (const e7l of e7lList) {
-    const user = await prisma.e7L.create({
-      data: e7l,
-    });
-    console.log(`Created E7L with id: ${user.id}`);
+    const existE7LInDB = e7ls.find(
+      (e) => e.contractAddress === e7l.contractAddress,
+    );
+
+    if (!existE7LInDB) {
+      const e7lCreated = await prisma.e7L.create({
+        data: e7l,
+      });
+
+      console.log(
+        `Created E7L ${e7lCreated.name.padStart(26)} with id: ${e7lCreated.id}`,
+      );
+    }
   }
   console.log(`Seeding finished.`);
 }
