@@ -103,6 +103,32 @@ builder.prismaObject("E7L", {
   }),
 });
 
+builder.mutationFields((t) => ({
+  addE7lCollection: t.prismaField({
+    authScopes: { isAuthenticated: true },
+    type: "E7L",
+    args: {
+      name: t.arg.string({ required: true }),
+      imageURL: t.arg.string({ required: true }),
+      contractAddress: t.arg.string({ required: true }),
+      deployedBlock: t.arg.int({ required: true }),
+    },
+    resolve: async (_root, _parent, args) => {
+      const e7l = await prisma.e7L.create({
+        data: {
+          lastBlockIndexed: args.deployedBlock,
+          deployedBlock: args.deployedBlock,
+          contractAddress: args.contractAddress,
+          imageURL: args.imageURL,
+          name: args.name,
+        },
+      });
+
+      return e7l;
+    },
+  }),
+}));
+
 builder.queryFields((t) => ({
   e7lTokensByAddress: t.prismaField({
     type: ["E7LToken"],
