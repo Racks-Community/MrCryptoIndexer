@@ -35,6 +35,22 @@ const e7lList: Prisma.E7LCreateInput[] = [
     imageURL:
       "https://mrcrypto-sources.s3.eu-central-1.amazonaws.com/drumerto/1.PNG",
   },
+  {
+    name: "E7L Sell Drugs",
+    deployedBlock: 47743375,
+    lastBlockIndexed: 47743375,
+    contractAddress: "0x59CdeA1ECe5AC15872b015A49d12993ea0857468",
+    imageURL:
+      "https://mrcrypto-sources.s3.eu-central-1.amazonaws.com/3-0/sell-drugs/sell-drugs.png",
+  },
+  {
+    name: "Mr. Crypto Gentleman's Day",
+    deployedBlock: 44709909,
+    lastBlockIndexed: 44709909,
+    contractAddress: "0x6955861dD2177324D47485A9EcCA71794ADB318f",
+    imageURL:
+      "https://media.discordapp.net/attachments/994890616163020870/1126094353111199744/NFT_Barbie_Ticket_Final.png",
+  },
 ];
 
 async function main() {
