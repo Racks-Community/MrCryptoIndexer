@@ -65,16 +65,20 @@ async function main() {
   console.log(`Start seeding ...`);
   const e7ls = await prisma.e7L.findMany();
 
-  if (e7ls.length > 0) {
-    console.log(`Already seeded.`);
-    return;
-  }
-
   for (const e7l of e7lList) {
-    const user = await prisma.e7L.create({
-      data: e7l,
-    });
-    console.log(`Created E7L with id: ${user.id}`);
+    const existE7LInDB = e7ls.find(
+      (e) => e.contractAddress === e7l.contractAddress,
+    );
+
+    if (!existE7LInDB) {
+      const e7lCreated = await prisma.e7L.create({
+        data: e7l,
+      });
+
+      console.log(
+        `Created E7L ${e7lCreated.name.padStart(26)} with id: ${e7lCreated.id}`,
+      );
+    }
   }
   console.log(`Seeding finished.`);
 }
