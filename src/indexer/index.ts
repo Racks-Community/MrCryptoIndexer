@@ -25,10 +25,10 @@ let nextExecutionTimeOut: NodeJS.Timeout | null = null;
 
 async function indexerCronJob() {
   isIndexerCronJobRunning = true;
-  console.log("Indexer stared ⚒️");
+  console.log(`Indexer stared ⚒️  at ${new Date().toUTCString()}`);
 
   await indexerProcess().catch((e) => {
-    console.error("Indexer failed ❌ 😭");
+    console.error(`Indexer failed ❌ 😭 at ${new Date().toUTCString()};`);
 
     const { message, stack } = e;
     console.error(message);
@@ -38,9 +38,9 @@ async function indexerCronJob() {
   });
 
   isIndexerCronJobRunning = false;
-  console.log("Indexer finished ✅ 🎉 😄");
+  console.log(`Indexer finished ✅ 🎉 😄  at ${new Date().toUTCString()}`);
+  console.log("Waiting 5 minutes for next indexation ⏰ \n\n");
 
-  console.log("Waiting 5 minutes for next indexation ⏰");
   nextExecutionTimeOut = setTimeout(indexerCronJob, FIVE_MINUTES);
 }
 
