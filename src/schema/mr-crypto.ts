@@ -26,8 +26,8 @@ builder.prismaObject("MrCrypto", {
     eyes: t.exposeString("attEyes"),
     headwear: t.exposeString("attHeadwear"),
     moustache: t.exposeString("attMoustache"),
-    score: t.exposeFloat("totalScore"),
-    ranking: t.exposeInt("ranking"),
+    rarityRanking: t.exposeInt("rarityRanking"),
+    rarityScore: t.exposeFloat("rarityScore"),
     type: t.exposeString("attType"),
   }),
 });
