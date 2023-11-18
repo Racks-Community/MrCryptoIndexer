@@ -24,8 +24,8 @@ jobs:
         uses: withastro/action@v1
         with:
           path: ./web # La ubicación de la raíz de tu proyecto de Astro dentro del repositorio. (opcional)
-        # node-version: 18 # La versión específica de Node que debe utilizarse para compilar tu proyecto. Por defecto es la 18. (opcional)
-        # package-manager: pnpm@latest # El gestor de paquetes de Node que debe instalar las dependencias y compilar tu proyecto. Automáticamente detectadas con base en tu archivo lockfile. (opcional)
+          # node-version: 18 # La versión específica de Node que debe utilizarse para compilar tu proyecto. Por defecto es la 18. (opcional)
+          package-manager: pnpm@latest # El gestor de paquetes de Node que debe instalar las dependencias y compilar tu proyecto. Automáticamente detectadas con base en tu archivo lockfile. (opcional)
 
   deploy:
     needs: build

@@ -27,4 +27,6 @@ export default defineConfig({
     }),
     tailwind({ applyBaseStyles: false }),
   ],
+  site: "https://Racks-Community.github.io",
+  base: "/MrCryptoIndexer",
 });
