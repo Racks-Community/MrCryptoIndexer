@@ -3,7 +3,7 @@ title: Motivación
 description: Descubre la razón detrás del desarrollo del indexador de Mr. Crypto.
 ---
 
-## ¿Qué es una indexador? 
+## ¿Qué es un indexador?
 
 Un indexador, en el contexto de la blockchain, es un programa que procesa y organiza datos de transacciones y contratos inteligentes. Su función es facilitar un acceso rápido y eficiente a estos datos, que de otra manera estarían dispersos y serían difíciles de analizar directamente desde la blockchain.
 
