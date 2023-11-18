@@ -6,6 +6,9 @@
   "engines": {
     "node": "v20.9.0"
   },
+  "workspaces": [
+    "web"
+  ],
   "packageManager": "pnpm@8.10.2",
   "scripts": {
     "start": "pnpm build && node dist/server",

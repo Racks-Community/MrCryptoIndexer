@@ -1,0 +1,39 @@
+name: GitHub Pages Astro CI
+
+on:
+  # Activa el workflow cada vez que hay un push a la rama `main`
+  # ¿Estás usando un nombre diferente de rama? Reemplaza `main` con el nombre de tu rama
+  push:
+    branches: [main]
+  # Te permite ejecutar este workflow manualmente desde la pestaña Actions en GitHub.
+  workflow_dispatch:
+
+# Permite clonar el repositorio y desplegar el proyecto
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout your repository using git
+        uses: actions/checkout@v3
+      - name: Install, build, and upload your site
+        uses: withastro/action@v1
+        with:
+          path: ./web # La ubicación de la raíz de tu proyecto de Astro dentro del repositorio. (opcional)
+        # node-version: 18 # La versión específica de Node que debe utilizarse para compilar tu proyecto. Por defecto es la 18. (opcional)
+        # package-manager: pnpm@latest # El gestor de paquetes de Node que debe instalar las dependencias y compilar tu proyecto. Automáticamente detectadas con base en tu archivo lockfile. (opcional)
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v1
