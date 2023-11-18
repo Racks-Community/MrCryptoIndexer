@@ -1,3 +1,8 @@
+enum AscendDescentByEnum {
+  asc
+  desc
+}
+
 enum Background {
   Blue
   Brown
@@ -160,7 +165,7 @@ enum Headwear {
 
 type Holder {
   address: String!
-  mrCryptosOwned: [MrCrypto!]!
+  mrCryptosOwned(first: Int! = 100, order: MrCryptoOrderBy! = {by: tokenId, type: desc}, skip: Int! = 0): [MrCrypto!]!
   numberOfMrCryptos: Int!
 }
 
@@ -192,8 +197,8 @@ type MrCrypto {
   imageURL: String!
   metadata: String!
   moustache: String!
-  ranking: Int!
-  score: Float!
+  rarityRanking: Int!
+  rarityScore: Float!
   tokenId: Int!
   type: String!
 }
@@ -207,7 +212,18 @@ input MrCryptoFilter {
   type: Type
 }
 
+input MrCryptoOrderBy {
+  by: MrCryptoOrderByEnum! = tokenId
+  type: AscendDescentByEnum! = desc
+}
+
+enum MrCryptoOrderByEnum {
+  rarityRanking
+  tokenId
+}
+
 type Mutation {
+  addE7lCollection(contractAddress: String!, deployedBlock: Int!, imageURL: String!, name: String!): E7L!
   startIndexationManually: String!
 }
 
