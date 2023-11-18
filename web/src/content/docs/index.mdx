@@ -1,10 +1,10 @@
 ---
-title: Welcome to Starlight
-description: Get started building your docs site with Starlight.
+title: Docs Mr. Crypto Indexer
+description: Get all data from Mr. Crypto NFT Collection
 template: splash
 hero:
   title: |
-    Mr. Crypto
+    Mr. Crypto <br />
     <span
       class="font-black text-transparent
         bg-clip-text bg-gradient-to-b
@@ -13,15 +13,22 @@ hero:
     >
       Indexer
     </span>
-  tagline: Congrats on setting up a new Starlight project!
+  tagline: Fast, flexible, and efficent.
+  image:
+    file: ../../assets/mrc-indexer.webp
   actions:
-    - text: Example Guide
-      link: /introduccion/motivacion/
+    - text: Documentación
+      link: /MrCryptoIndexer/introduccion/motivacion/
       icon: right-arrow
       variant: primary
-    - text: Read the Starlight docs
-      link: https://starlight.astro.build
+    - text: Probar en vivo
+      link: https://indexer.mrcryptonft.com/?query=query+example+%7B%0A++mrCryptoTokens%28first%3A+5%29%7B%0A++++tokenId%0A++++imageURL%0A++++Owner%7B%0A++++++address%0A++++%7D%0A++%7D%0A%7D
       icon: external
+      variant: secondary
+    - text: Mr. Crypto - OpenSea
+      link: https://opensea.io/es/collection/mrcrypto-by-racksmafia
+      icon: external
+      variant: minimal
 ---
 
 import { Card, CardGrid } from "@astrojs/starlight/components";
