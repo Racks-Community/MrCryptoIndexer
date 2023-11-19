@@ -19,7 +19,16 @@ export async function indexMrCrypto(currentBlock: bigint) {
     },
   });
 
-  const lastTransferBlock = lastIteration._max.toBlockNumber ?? 0n;
+  const lastMrCryptoTransferred = await prisma.mrCrypto.aggregate({
+    _max: {
+      lastTransferBlock: true,
+    },
+  });
+
+  const lastTransferBlock = bigIntMax(
+    lastIteration._max.toBlockNumber ?? 0n,
+    lastMrCryptoTransferred._max.lastTransferBlock ?? 0n,
+  );
 
   for (
     let block = bigIntMax(MRCRYPTO_DEPLOY_BLOCK, lastTransferBlock + 1n);
@@ -29,10 +38,20 @@ export async function indexMrCrypto(currentBlock: bigint) {
     const fromBlock = block;
     const toBlock = bigIntMin(block + BLOCKS_PER_QUERY - 1n, currentBlock);
 
+    const fromTimestamp = (await client.getBlock({ blockNumber: fromBlock }))
+      .timestamp;
+    const fromDate = new Date(Number(fromTimestamp) * 1000);
+
+    const toTimestamp = (await client.getBlock({ blockNumber: toBlock }))
+      .timestamp;
+    const toDate = new Date(Number(toTimestamp) * 1000);
+
     const iteration = await prisma.indexationIteration.create({
       data: {
         fromBlockNumber: fromBlock,
         toBlockNumber: toBlock,
+        fromDateTime: fromDate,
+        toDateTime: toDate,
       },
     });
 
