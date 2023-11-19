@@ -6,10 +6,18 @@ import tailwind from "@astrojs/tailwind";
 export default defineConfig({
   integrations: [
     starlight({
+      defaultLocale: "es",
       title: "Mr. Crypto Indexer",
+      locales: {
+        root: {
+          label: "Español",
+          lang: "es",
+        },
+      },
       social: {
         github: "https://github.com/Racks-Community/MrCryptoIndexer/",
         "x.com": "https://x.com/mrcryptobyracks",
+        discord: "https://discord.gg/cRBBd27FSj",
       },
       editLink: {
         baseUrl:
@@ -23,6 +31,96 @@ export default defineConfig({
             {
               label: "Motivación",
               link: "/introduccion/motivacion",
+            },
+            {
+              label: "Stack tecnológico",
+              link: "/introduccion/stack-tecnologico",
+            },
+          ],
+        },
+        {
+          label: "Guía de uso",
+          items: [
+            {
+              label: "Instalación en local",
+              items: [
+                {
+                  label: "Pre-requisitos",
+                  link: "/guia-de-uso/local/pre-requisitos",
+                },
+              ],
+            },
+            {
+              label: "Utilizando docker",
+              items: [
+                {
+                  label: "Pre-requisitos",
+                  link: "/guia-de-uso/docker/pre-requisitos",
+                },
+              ],
+            },
+          ],
+        },
+        {
+          label: "Referencias",
+          items: [
+            {
+              label: "Mr. Crypto",
+              items: [
+                {
+                  label: "Web Oficial",
+                  link: "https://mrcryptonft.com/",
+                  attrs: {
+                    target: "_blank",
+                    rel: "noopener",
+                  },
+                },
+                {
+                  label: "OpenSea",
+                  link: "https://opensea.io/es/collection/mrcrypto-by-racksmafia",
+                  attrs: {
+                    target: "_blank",
+                    rel: "noopener",
+                  },
+                },
+                {
+                  label: "Discord",
+                  link: "https://discord.gg/cRBBd27FSj",
+                  attrs: {
+                    target: "_blank",
+                    rel: "noopener",
+                  },
+                },
+              ],
+            },
+            {
+              label: "Racks Labs",
+              items: [
+                {
+                  label: "Web Oficial",
+                  link: "https://www.rackslabs.com/",
+                  attrs: {
+                    target: "_blank",
+                    rel: "noopener",
+                  },
+                },
+                {
+                  label: "E7L",
+                  link: "https://www.e7l.rackslabs.com/",
+                  attrs: {
+                    target: "_blank",
+                    rel: "noopener",
+                  },
+                },
+                {
+                  label: "Discord",
+                  link: "https://discord.gg/cRBBd27FSj",
+                  attrs: {
+                    target: "_blank",
+                    rel: "noopener",
+                  },
+                },
+              ],
             },
           ],
         },

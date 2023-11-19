@@ -2,6 +2,7 @@ import { createYoga } from "graphql-yoga";
 import { createServer } from "http";
 import { schema } from "./schema";
 import { startIndexation } from "@/indexer";
+import { env } from "./env";
 
 const yoga = createYoga({
   graphqlEndpoint: "/",
@@ -9,9 +10,7 @@ const yoga = createYoga({
   context: ({ request }) => {
     return {
       req: request,
-      isAuthenticated:
-        process.env.ADMIN_API_KEY &&
-        process.env.ADMIN_API_KEY === request.headers.get("x-api-key"),
+      isAuthenticated: env.ADMIN_API_KEY === request.headers.get("x-api-key"),
     };
   },
 });

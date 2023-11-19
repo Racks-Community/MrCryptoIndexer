@@ -4,6 +4,7 @@
 // ==============================================================
 import data from "./_metadata_save.json";
 import ranking from "./_ranking.json";
+import * as prettier from "prettier";
 
 import fs from "fs";
 import path from "path";
@@ -51,9 +52,39 @@ rankingData.forEach((element, ranking) => {
 });
 
 const out = path.resolve(__dirname, "./index.ts");
+const prettierConfigPath = path.resolve(__dirname, "../../../.prettierrc.mjs");
 
-fs.writeFileSync(
-  out,
-  `export const metadata : Record<number, { image: string; ranking: number; total_score: number; attributes: { Background: string; Clothes: string; Eyes: string; Headwear: string; Moustache: string; Type: string; }; }> 
-  = ${JSON.stringify(res, null, 2)}`,
-);
+// prettier-ignore
+const header = 
+`// ==================================================
+// Auto generate code. Please don't edit it manually!
+// 
+// Generates with \`pnpm metadata:codegen\`
+// ==================================================\n\n`
+
+// prettier-ignore
+let code = 
+`export const metadata: Record<
+  number,
+  {
+    image: string;
+    ranking: number;
+    total_score: number;
+    attributes: {
+      Background: string;
+      Clothes: string;
+      Eyes: string;
+      Headwear: string;
+      Moustache: string;
+      Type: string;
+    };
+  } 
+> = ${JSON.stringify(res, null, 2)}`;
+
+prettier
+  .resolveConfig(prettierConfigPath)
+  .then((options) =>
+    prettier
+      .format(header + code, { ...options, filepath: out })
+      .then((formattedCode) => fs.writeFileSync(out, formattedCode)),
+  );

@@ -23,6 +23,17 @@ model Holder {
   @@index([address])
 }
 
+model IndexationIteration {
+  id              String    @id @default(uuid())
+  fromBlockNumber BigInt
+  fromDateTime    DateTime
+  toBlockNumber   BigInt
+  toDateTime      DateTime
+  starterAt       DateTime  @default(now())
+  finishedAt      DateTime?
+  secondsElapsed  Int?
+}
+
 model MrCrypto {
   id                String     @id @default(uuid())
   tokenId           Int        @unique
@@ -42,7 +53,7 @@ model MrCrypto {
   Transfers         Transfer[]
   E7LTokensLinked   E7LToken[]
 
-  @@index([ownerId, tokenId])
+  @@index([ownerId, tokenId, rarityScore, rarityRanking])
 }
 
 model E7L {

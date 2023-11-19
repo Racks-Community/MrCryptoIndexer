@@ -1,3 +1,9 @@
+// ==================================================
+// Auto generate code. Please don't edit it manually!
+//
+// Generates with `pnpm metadata:codegen`
+// ==================================================
+
 export const metadata: Record<
   number,
   {
