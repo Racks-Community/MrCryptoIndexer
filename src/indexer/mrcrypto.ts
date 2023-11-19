@@ -13,13 +13,13 @@ const USDC_ADDRESS = "0x2791Bca1f2de4661ED88A30C99A7a9449Aa84174" as const;
 const WETH_ADDRESS = "0x7ceB23fD6bC0adD59E62ac25578270cFf1b9f619" as const;
 
 export async function indexMrCrypto(currentBlock: bigint) {
-  const raw = await prisma.mrCrypto.aggregate({
+  const lastIteration = await prisma.indexationIteration.aggregate({
     _max: {
-      lastTransferBlock: true,
+      toBlockNumber: true,
     },
   });
 
-  const lastTransferBlock = raw._max.lastTransferBlock ?? 0n;
+  const lastTransferBlock = lastIteration._max.toBlockNumber ?? 0n;
 
   for (
     let block = bigIntMax(MRCRYPTO_DEPLOY_BLOCK, lastTransferBlock + 1n);
@@ -28,6 +28,14 @@ export async function indexMrCrypto(currentBlock: bigint) {
   ) {
     const fromBlock = block;
     const toBlock = bigIntMin(block + BLOCKS_PER_QUERY - 1n, currentBlock);
+
+    const iteration = await prisma.indexationIteration.create({
+      data: {
+        fromBlockNumber: fromBlock,
+        toBlockNumber: toBlock,
+      },
+    });
+
     const filter = await client.createContractEventFilter({
       abi: abiMrcrypto,
       address: MRCRYPTO_ADDRESS,
@@ -140,6 +148,21 @@ export async function indexMrCrypto(currentBlock: bigint) {
         });
       }
     }
+
+    const finishedAt = new Date();
+    const secondsElapsed = Math.floor(
+      finishedAt.getTime() / 1000 - iteration.starterAt.getTime() / 1000,
+    );
+
+    await prisma.indexationIteration.update({
+      where: {
+        id: iteration.id,
+      },
+      data: {
+        finishedAt,
+        secondsElapsed,
+      },
+    });
   }
 }
 
