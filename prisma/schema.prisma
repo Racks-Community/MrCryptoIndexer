@@ -17,6 +17,7 @@ datasource db {
 model Holder {
   id             String     @id @default(uuid())
   address        String     @unique
+  holderScore    BigInt     @default(0)
   MrCryptosOwned MrCrypto[]
   E7LTokensOwned E7LToken[]
 
