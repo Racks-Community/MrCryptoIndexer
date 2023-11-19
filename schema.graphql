@@ -165,6 +165,7 @@ enum Headwear {
 
 type Holder {
   address: String!
+  bankingPercentage: Float!
   mrCryptosOwned(first: Int! = 100, order: MrCryptoOrderBy! = {by: tokenId, type: desc}, skip: Int! = 0): [MrCrypto!]!
   numberOfMrCryptos: Int!
 }
@@ -243,6 +244,7 @@ type Query {
   e7lCollections: [E7L!]!
   e7lTokens(first: Int! = 100, skip: Int! = 0): [E7LToken!]!
   e7lTokensByAddress(address: String!): [E7LToken!]!
+  holderByAddress(address: String!): Holder!
   isAuthenticated: Boolean!
   isIndexerCronJobRunning: Boolean!
   mrCryptoById(tokenId: Int!): MrCrypto!

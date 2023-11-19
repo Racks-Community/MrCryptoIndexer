@@ -12,6 +12,23 @@ const MrCryptoOrderByEnum = builder.enumType("MrCryptoOrderByEnum", {
 builder.prismaObject("Holder", {
   fields: (t) => ({
     address: t.exposeString("address"),
+    bankingPercentage: t.float({
+      resolve: async (param) => {
+        const totalHoldersScore = await prisma.holder.aggregate({
+          _sum: {
+            holderScore: true,
+          },
+        });
+
+        if (!totalHoldersScore._sum.holderScore) return 0;
+
+        return (
+          (Number(param.holderScore) /
+            Number(totalHoldersScore._sum.holderScore)) *
+          100
+        );
+      },
+    }),
     mrCryptosOwned: t.relation("MrCryptosOwned", {
       args: {
         first: t.arg.int({ required: true, defaultValue: 100 }),
@@ -65,6 +82,20 @@ builder.queryFields((t) => ({
         take: args.take,
         orderBy: {
           MrCryptosOwned: { _count: "desc" },
+        },
+      });
+    },
+  }),
+  holderByAddress: t.prismaField({
+    type: "Holder",
+    args: {
+      address: t.arg.string({ required: true }),
+    },
+    resolve: (query, _parent, args) => {
+      return prisma.holder.findUniqueOrThrow({
+        ...query,
+        where: {
+          address: args.address,
         },
       });
     },
