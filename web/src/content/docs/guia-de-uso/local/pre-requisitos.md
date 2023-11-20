@@ -3,7 +3,7 @@ title: Pre-requisitos
 description: Requisitos necesarios para la puesta en marcha del indexador.
 ---
 
-## Instalar Node.js y pnpm 
+## Instalar Node.js y pnpm
 
 El indexador utiliza [pnpm](https://pnpm.io/). Necesitas installar **Node.js v18 o superior** y **pnpm v8 o superior**.
 
@@ -31,13 +31,16 @@ psql --version
 
 Comprueba que tengas el servicio de PostgreSQL en ejecución:
 
-- En Linux: 
+- En Linux:
+
 ```bash
 sudo systemctl status postgresql
 ```
 
-- En Mac: 
+- En Mac:
+
 ```bash
 brew services list
 ```
+
 y buscar `postgresql` en la lista para ver si está en ejecución.

@@ -12,9 +12,7 @@ git clone https://github.com/Racks-Community/MrCryptoIndexer.git
 cd MrCryptoIndexer
 ```
 
-
 ## Instalar dependencias
-
 
 ```bash
 pnpm install
@@ -30,11 +28,12 @@ cp .env.example .env
 
 Las únicas variable de entorno **obligatoria** para configurar es `RPC_URL`, esta es la API de acceso a la blockchain de Polygon, y `DATABASE_URL` a la base de datos de PostgreSQL.
 
-Las demás pueden dejarse con los valores por defecto (*no recomendable para producción*).
+Las demás pueden dejarse con los valores por defecto (_no recomendable para producción_).
 
 Para la variable `RPC_URL`, puedes conseguir una propia en (Alchemy)[https://www.alchemy.com/]
 
 Debería tener un formato similar a este:
+
 ```
 DATABASE_URL=postgresql://{usario}:{constraseña}@localhost:5432/{nombre de la base de datos}
 RPC_URL=https://polygon-mainnet.g.alchemy.com/v2/xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -57,6 +56,3 @@ pnpm db:seed
 ```bash
 pnpm start
 ```
-
-
-

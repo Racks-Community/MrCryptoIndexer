@@ -2,6 +2,7 @@
 title: Pre-requisitos
 description: Requisitos necesarios para la puesta en marcha del indexador.
 ---
+
 ## Instalación de Git
 
 Para instalar Git en tu sistema operativo, sigue las instrucciones de la [documentación oficial](https://git-scm.com/downloads).

@@ -21,21 +21,20 @@ cp .env.example .env
 ### Configurar variables de entorno
 
 La única variable de entorno **obligatoria** para configurar es `RPC_URL`, esta es la API de acceso a la blockchain de Polygon.
-Las demás pueden dejarse con los valores por defecto (*no recomendable para producción*).
+Las demás pueden dejarse con los valores por defecto (_no recomendable para producción_).
 
 Puedes conseguirla una propia en (Alchemy)[https://www.alchemy.com/]
 
 Debería tener un formato similar a este:
+
 ```
 RPC_URL=https://polygon-mainnet.g.alchemy.com/v2/xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 ```
 
-
-## Levantar el entorno 
+## Levantar el entorno
 
 Para levantar el entorno, utilizado `docker compose`
 
 ```bash
 docker compose up --build -d
 ```
-
