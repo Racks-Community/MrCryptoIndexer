@@ -45,9 +45,9 @@ const e7lList: Prisma.E7LCreateInput[] = [
   },
   {
     name: "Mr. Crypto Gentleman's Day",
-    deployedBlock: 44709909,
-    lastBlockIndexed: 44709909,
-    contractAddress: "0x6955861dD2177324D47485A9EcCA71794ADB318f",
+    deployedBlock: 45678048,
+    lastBlockIndexed: 45678048,
+    contractAddress: "0x33c4b744557fb4f0676188a19d9f7e263fe8094e",
     imageURL:
       "https://media.discordapp.net/attachments/994890616163020870/1126094353111199744/NFT_Barbie_Ticket_Final.png",
   },
@@ -55,9 +55,33 @@ const e7lList: Prisma.E7LCreateInput[] = [
     name: "Mr. Crypto Poker Club",
     deployedBlock: 45678048,
     lastBlockIndexed: 45678048,
-    contractAddress: "0xb9EDE6f94D192073D8eaF85f8db677133d483249",
+    contractAddress: "0x6955861dd2177324d47485a9ecca71794adb318f",
     imageURL:
       "https://media.discordapp.net/attachments/1083074062756106270/1099735293134897153/ticket.jpg",
+  },
+  {
+    name: "Dream Big",
+    deployedBlock: 50009856,
+    lastBlockIndexed: 50009856,
+    contractAddress: "0x3815a788a8ebbda1bc169b6ff61e3fcead3fc0e2",
+    imageURL:
+      "https://mrcrypto-sources.s3.eu-central-1.amazonaws.com/3-0/dream-big/Copia+de+DREAM+BIG+B.png",
+  },
+  {
+    name: "White Basics",
+    deployedBlock: 50009610,
+    lastBlockIndexed: 50009610,
+    contractAddress: "0xdd2bccd9b4ad9f4ddaa6c09eae0fb2def49a4f8b",
+    imageURL:
+      "https://mrcrypto-sources.s3.eu-central-1.amazonaws.com/3-0/basic-white/Copia+de+Racks+W.png",
+  },
+  {
+    name: "Black Basic",
+    deployedBlock: 50008555,
+    lastBlockIndexed: 50008555,
+    contractAddress: "0x6f85d2b673b109c92b95bd066a976e210dffb213",
+    imageURL:
+      "https://mrcrypto-sources.s3.eu-central-1.amazonaws.com/3-0/basic-black/Copia+de+Racks+N.png",
   },
 ];
 

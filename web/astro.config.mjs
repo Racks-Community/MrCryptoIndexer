@@ -48,6 +48,10 @@ export default defineConfig({
                   label: "Pre-requisitos",
                   link: "/guia-de-uso/local/pre-requisitos",
                 },
+                {
+                  label: "Instalación",
+                  link: "/guia-de-uso/local/instalacion",
+                },
               ],
             },
             {
@@ -56,6 +60,10 @@ export default defineConfig({
                 {
                   label: "Pre-requisitos",
                   link: "/guia-de-uso/docker/pre-requisitos",
+                },
+                {
+                  label: "Instalación",
+                  link: "/guia-de-uso/docker/instalacion",
                 },
               ],
             },
