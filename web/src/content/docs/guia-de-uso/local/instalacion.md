@@ -92,10 +92,9 @@ Ahora toca esperar a que se sincronice la base de datos con la blockchain, esto 
 
 :::note
 
-Los rangos de bloques del `26939541-27039540` y el `27439541-27539540`, son los que más tardan en sincronizarse, ya que son los que más transacciones tienen, debido a que son los bloques correspondientes a la primera y segunda fase del *mint* del los **Mr. Crypto**.
+Los rangos de bloques del `26939541-27039540` y el `27439541-27539540`, son los que más tardan en sincronizarse, ya que son los que más transacciones tienen, debido a que son los bloques correspondientes a la primera y segunda fase del _mint_ del los **Mr. Crypto**.
 
 :::
-
 
 ## Indexación terminada
 
@@ -103,7 +102,7 @@ Cuando la indexación haya terminado, deberíamos ver algo similar a esto en la 
 
 ```bash title="Terminal"
 Indexer finished ✅ 🎉 😄  at Tue, 21 Nov 2023 18:02:36 GMT
-Waiting 5 minutes for next indexation ⏰ 
+Waiting 5 minutes for next indexation ⏰
 ```
 
 Y a los 5 minutos, volverá a comenzar la indexación desde donde termino la última vez y así sucesivamente.

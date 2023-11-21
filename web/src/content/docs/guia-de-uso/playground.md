@@ -1,7 +1,7 @@
 ---
 title: Playground
 description: Playground para probar el funcionamiento del indexador.
---- 
+---
 
 ## ¿Qué es el Playground?
 
@@ -9,7 +9,7 @@ El Playground es una herramienta que te permite probar el funcionamiento del ind
 
 ## ¿Cómo funciona?
 
-Una vez tenemos el indexador en funcionamiento, podemos acceder al Playground a través de `localhost:4000`. 
+Una vez tenemos el indexador en funcionamiento, podemos acceder al Playground a través de `localhost:4000`.
 
 Al izquierda de la pantalla, podemos ver el panel de peticiones, donde podemos escribir las peticiones que queremos hacer al indexador.
 
@@ -23,11 +23,11 @@ Para probar el funcionamiento, podemos hacer una petición de prueba, como por e
 
 ```graphql
 {
-  collectionInfo{
+  collectionInfo {
     name
     description
     address
-    volumen{
+    volumen {
       amount
       currency
     }
