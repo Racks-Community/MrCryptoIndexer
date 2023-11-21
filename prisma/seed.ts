@@ -45,9 +45,9 @@ const e7lList: Prisma.E7LCreateInput[] = [
   },
   {
     name: "Mr. Crypto Gentleman's Day",
-    deployedBlock: 45678048,
-    lastBlockIndexed: 45678048,
-    contractAddress: "0x33c4b744557fb4f0676188a19d9f7e263fe8094e",
+    deployedBlock: 44709909,
+    lastBlockIndexed: 44709909,
+    contractAddress: "0x6955861dd2177324d47485a9ecca71794adb318f",
     imageURL:
       "https://media.discordapp.net/attachments/994890616163020870/1126094353111199744/NFT_Barbie_Ticket_Final.png",
   },
@@ -55,7 +55,7 @@ const e7lList: Prisma.E7LCreateInput[] = [
     name: "Mr. Crypto Poker Club",
     deployedBlock: 45678048,
     lastBlockIndexed: 45678048,
-    contractAddress: "0x6955861dd2177324d47485a9ecca71794adb318f",
+    contractAddress: "0x33c4b744557fb4f0676188a19d9f7e263fe8094e",
     imageURL:
       "https://media.discordapp.net/attachments/1083074062756106270/1099735293134897153/ticket.jpg",
   },
