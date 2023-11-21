@@ -55,7 +55,7 @@ export default defineConfig({
               ],
             },
             {
-              label: "Utilizando docker",
+              label: "Instalación con docker",
               items: [
                 {
                   label: "Pre-requisitos",
@@ -64,6 +64,15 @@ export default defineConfig({
                 {
                   label: "Instalación",
                   link: "/guia-de-uso/docker/instalacion",
+                },
+              ],
+            },
+            {
+              label: "Uso del indexador",
+              items: [
+                {
+                  label: "Playground",
+                  link: "/guia-de-uso/playground",
                 },
               ],
             },
@@ -115,14 +124,6 @@ export default defineConfig({
                 {
                   label: "E7L",
                   link: "https://www.e7l.rackslabs.com/",
-                  attrs: {
-                    target: "_blank",
-                    rel: "noopener",
-                  },
-                },
-                {
-                  label: "Discord",
-                  link: "https://discord.gg/cRBBd27FSj",
                   attrs: {
                     target: "_blank",
                     rel: "noopener",

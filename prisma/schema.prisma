@@ -73,7 +73,7 @@ model E7LToken {
   mrcryptoTokenId Int?
   MrCrypto        MrCrypto? @relation(fields: [mrcryptoTokenId], references: [tokenId])
   linkedAt        BigInt
-  E7L             E7L       @relation(fields: [e7lId], references: [id])
+  E7L             E7L       @relation(fields: [e7lId], references: [id], onDelete: Cascade)
   e7lId           String
   metadataURL     String
   imageURL        String

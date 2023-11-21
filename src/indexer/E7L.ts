@@ -1,7 +1,13 @@
 import { prisma } from "@/db";
-import { BLOCKS_PER_QUERY, bigIntMin, client } from "./common";
+import {
+  BLOCKS_PER_QUERY,
+  MRCRYPTO_ADDRESS,
+  bigIntMin,
+  client,
+} from "./common";
 import { abiE7L } from "./abis/abi-E7L";
 import { E7L } from "@prisma/client";
+import { abiE7lNew } from "./abis/abi-E7L-new";
 
 export async function indexE7L(
   lastBlockIndexed: bigint,
@@ -39,8 +45,18 @@ async function indexLinks(e7l: E7L, block: bigint, currentBlock: bigint) {
     toBlock: bigIntMin(block + BLOCKS_PER_QUERY - 1n, currentBlock),
   });
 
-  const logs = await client.getFilterLogs({ filter });
+  const filter2 = await client.createContractEventFilter({
+    abi: abiE7lNew,
+    address: e7l.contractAddress as `0x${string}`,
+    eventName: "Link",
+    fromBlock: block,
+    toBlock: bigIntMin(block + BLOCKS_PER_QUERY - 1n, currentBlock),
+  });
 
+  const logs = await client.getFilterLogs({ filter });
+  const logs2 = await client.getFilterLogs({ filter: filter2 });
+
+  // Index old E7L
   for (let log of logs) {
     const e7lTokenId = Number(log.args.tokenId);
     const mrcryptoTokenId = Number(log.args.parentTokenId);
@@ -49,7 +65,41 @@ async function indexLinks(e7l: E7L, block: bigint, currentBlock: bigint) {
     console.log(
       `[${e7l.name.padStart(10)}] E7L ${e7lTokenId
         .toString()
-        .padStart(4)} linked to MrCrypto ${e7lTokenId.toString().padStart(4)}`,
+        .padStart(4)} linked to MrCrypto ${mrcryptoTokenId
+        .toString()
+        .padStart(4)}`,
+    );
+
+    await prisma.e7LToken.update({
+      where: {
+        e7lId_e7lTokenId: {
+          e7lId: e7l.id,
+          e7lTokenId,
+        },
+      },
+      data: {
+        mrcryptoTokenId,
+        linkedAt: block,
+      },
+    });
+  }
+
+  // Index new E7L (with parentContract in the abi)
+  for (let log of logs2) {
+    const e7lTokenId = Number(log.args.tokenId);
+    const mrcryptoTokenId = Number(log.args.parentTokenId);
+    const block = log.blockNumber ?? 0n;
+
+    if (log.args.parentContract != MRCRYPTO_ADDRESS) {
+      continue;
+    }
+
+    console.log(
+      `[${e7l.name.padStart(10)}] E7L ${e7lTokenId
+        .toString()
+        .padStart(4)} linked to MrCrypto ${mrcryptoTokenId
+        .toString()
+        .padStart(4)}`,
     );
 
     await prisma.e7LToken.update({

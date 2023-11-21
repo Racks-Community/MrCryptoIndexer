@@ -23,7 +23,7 @@
     "db:generate": "prisma generate",
     "db:push": "prisma db push",
     "db:studio": "prisma studio",
-    "db:seed": "prisma db push --force-reset && npx prisma db seed",
+    "db:seed": "prisma db seed",
     "db:reset": "prisma db push --force-reset"
   },
   "prisma": {
