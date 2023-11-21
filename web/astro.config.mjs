@@ -129,14 +129,6 @@ export default defineConfig({
                     rel: "noopener",
                   },
                 },
-                {
-                  label: "Discord",
-                  link: "https://discord.gg/cRBBd27FSj",
-                  attrs: {
-                    target: "_blank",
-                    rel: "noopener",
-                  },
-                },
               ],
             },
           ],
