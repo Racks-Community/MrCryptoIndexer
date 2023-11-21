@@ -55,7 +55,7 @@ export default defineConfig({
               ],
             },
             {
-              label: "Utilizando docker",
+              label: "Instalación con docker",
               items: [
                 {
                   label: "Pre-requisitos",
@@ -64,6 +64,15 @@ export default defineConfig({
                 {
                   label: "Instalación",
                   link: "/guia-de-uso/docker/instalacion",
+                },
+              ],
+            },
+            {
+              label: "Uso del indexador",
+              items: [
+                {
+                  label: "Playground",
+                  link: "/guia-de-uso/playground",
                 },
               ],
             },

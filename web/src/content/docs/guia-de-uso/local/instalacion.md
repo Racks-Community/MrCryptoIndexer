@@ -34,7 +34,8 @@ Para la variable `RPC_URL`, puedes conseguir una propia en (Alchemy)[https://www
 
 Debería tener un formato similar a este:
 
-```
+```bash
+# .env
 DATABASE_URL=postgresql://{usario}:{constraseña}@localhost:5432/{nombre de la base de datos}
 RPC_URL=https://polygon-mainnet.g.alchemy.com/v2/xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 ```
@@ -56,3 +57,53 @@ pnpm db:seed
 ```bash
 pnpm start
 ```
+
+En la terminal deberíamos ver algo similar a esto:
+
+```bash title="Terminal"
+CLI Building entry: src/server.ts
+CLI Using tsconfig: tsconfig.json
+CLI tsup v8.0.0
+CLI Using tsup config: /app/tsup.config.ts
+CLI Target: node18
+CLI Cleaning output folder
+CJS Build start
+CJS dist/server.js 2.69 MB
+CJS ⚡️ Build success in 198ms
+DTS Build start
+DTS ⚡️ Build success in 5032ms
+DTS dist/server.d.ts 13.00 B
+
+> mrcryptoindexer@1.0.0 build:schema
+> ts-node -r tsconfig-paths/register src/schema/index.ts
+
+Indexer stared ⚒️  at Tue, 21 Nov 2023 16:55:28 GMT
+🚀 Server ready at: http://127.0.0.1:4000
+⭐️ See sample queries: http://pris.ly/e/ts/graphql#using-the-graphql-api
+
+Current block number: 50219518
+indexing from block 25839541 to 25939540
+indexing from block 25939541 to 26039540
+indexing from block 26039541 to 26139540
+...
+```
+
+Ahora toca esperar a que se sincronice la base de datos con la blockchain, esto tardar un rato, sobre todo al principio.
+
+:::note
+
+Los rangos de bloques del `26939541-27039540` y el `27439541-27539540`, son los que más tardan en sincronizarse, ya que son los que más transacciones tienen, debido a que son los bloques correspondientes a la primera y segunda fase del *mint* del los **Mr. Crypto**.
+
+:::
+
+
+## Indexación terminada
+
+Cuando la indexación haya terminado, deberíamos ver algo similar a esto en la terminal:
+
+```bash title="Terminal"
+Indexer finished ✅ 🎉 😄  at Tue, 21 Nov 2023 18:02:36 GMT
+Waiting 5 minutes for next indexation ⏰ 
+```
+
+Y a los 5 minutos, volverá a comenzar la indexación desde donde termino la última vez y así sucesivamente.
