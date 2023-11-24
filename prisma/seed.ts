@@ -83,6 +83,94 @@ const e7lList: Prisma.E7LCreateInput[] = [
     imageURL:
       "https://mrcrypto-sources.s3.eu-central-1.amazonaws.com/3-0/basic-black/Copia+de+Racks+N.png",
   },
+  {
+    name: "Escape Socialism",
+    deployedBlock: 50010086,
+    lastBlockIndexed: 50010086,
+    contractAddress: "0x8F5dB0BE663eDbe6Ce8Df33578f613836dbaf722",
+    imageURL:
+      "https://mrcrypto-sources.s3.eu-central-1.amazonaws.com/3-0/escape-socialism/Copia+de+ESCAPE+Camiseta+3.0.png",
+  },
+  {
+    name: "Racks Airlines",
+    deployedBlock: 50010232,
+    lastBlockIndexed: 50010232,
+    contractAddress: "0x276aEA5FBD086a72Effc140CD91979Fee7b06968",
+    imageURL:
+      "https://mrcrypto-sources.s3.eu-central-1.amazonaws.com/3-0/racks-airlines/Copia+de+Racks+Airlines+B.png",
+  },
+  {
+    name: "White Sell Drugx",
+    deployedBlock: 50010649,
+    lastBlockIndexed: 50010649,
+    contractAddress: "0x9e18c01FEEd4fDDd37D7ff5C2BF47072766Bc8C8",
+    imageURL:
+      "https://mrcrypto-sources.s3.eu-central-1.amazonaws.com/3-0/white-sell-drugx/Copia+de+9.png",
+  },
+  {
+    name: "Orange Outline",
+    deployedBlock: 50010773,
+    lastBlockIndexed: 50010773,
+    contractAddress: "0x1eE639A49F7ACfDf12D87B11ecFB9D68bDc338e2",
+    imageURL:
+      "https://mrcrypto-sources.s3.eu-central-1.amazonaws.com/3-0/orange-outline/Copia+de+Outline+naranja+2.png",
+  },
+  {
+    name: "Outline Black & White",
+    deployedBlock: 50010990,
+    lastBlockIndexed: 50010990,
+    contractAddress: "0xA5D34B55e67EA8BcFf16d445Da52862942286428",
+    imageURL:
+      "https://mrcrypto-sources.s3.eu-central-1.amazonaws.com/3-0/outline-black-white/Copia+de+Outline+blanco+2+.png",
+  },
+  {
+    name: "Outline White & Black",
+    deployedBlock: 50011133,
+    lastBlockIndexed: 50011133,
+    contractAddress: "0x24d7d206303b75F697DbE264FA273105a27B0090",
+    imageURL:
+      "https://mrcrypto-sources.s3.eu-central-1.amazonaws.com/3-0/outline-white-black/Copia+de+Outline+negro+.png",
+  },
+  {
+    name: "Pólvora",
+    deployedBlock: 50011241,
+    lastBlockIndexed: 50011241,
+    contractAddress: "0xD786874107Fc790e4c54CAab0Bc6D6981a2E2768",
+    imageURL:
+      "https://mrcrypto-sources.s3.eu-central-1.amazonaws.com/3-0/polvora/Copia+de+POLVORA.png",
+  },
+  {
+    name: "Escape Socialism Hoodie",
+    deployedBlock: 50013106,
+    lastBlockIndexed: 50013106,
+    contractAddress: "0xfFe4dB5C12Cd5cC27809504abFfc336eb5e196e5",
+    imageURL:
+      "https://mrcrypto-sources.s3.eu-central-1.amazonaws.com/3-0/escape-socialism-hoodie/Copia+de+ESCAPE+sudadera+3.0.png",
+  },
+  {
+    name: "Sell Drugx Hoodie",
+    deployedBlock: 50013280,
+    lastBlockIndexed: 50013280,
+    contractAddress: "0x4B1ab584BB3157Bf8245Aaf7f7aC66E18aE2a030",
+    imageURL:
+      "https://mrcrypto-sources.s3.eu-central-1.amazonaws.com/3-0/sell-drugx-hoodie/Copia+de+8.png",
+  },
+  {
+    name: "Mamba Black",
+    deployedBlock: 50014613,
+    lastBlockIndexed: 50014613,
+    contractAddress: "0x64C6Fd121f285eb611083745dD177549D0c6a8d1",
+    imageURL:
+      "https://mrcrypto-sources.s3.eu-central-1.amazonaws.com/3-0/mamba-black/mamba_black.jpg",
+  },
+  {
+    name: "Mamba White",
+    deployedBlock: 50014756,
+    lastBlockIndexed: 50014756,
+    contractAddress: "0x16261975FF8173449d691b61f6bcB3A7EFfEBFB4",
+    imageURL:
+      "https://mrcrypto-sources.s3.eu-central-1.amazonaws.com/3-0/mamba-white/MAMBA_WHITE.png",
+  },
 ];
 
 async function main() {
