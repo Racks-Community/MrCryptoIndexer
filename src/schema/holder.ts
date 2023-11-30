@@ -29,6 +29,23 @@ builder.prismaObject("Holder", {
         );
       },
     }),
+    holderScore: t.expose("holderScore", { type: "BigInt" }),
+    holderRanking: t.int({
+      resolve: async (param) => {
+        const totalHoldersScore = await prisma.holder.aggregate({
+          _count: {
+            holderScore: true,
+          },
+          where: {
+            holderScore: {
+              gt: param.holderScore,
+            },
+          },
+        });
+
+        return totalHoldersScore._count.holderScore + 1;
+      },
+    }),
     mrCryptosOwned: t.relation("MrCryptosOwned", {
       args: {
         first: t.arg.int({ required: true, defaultValue: 100 }),
